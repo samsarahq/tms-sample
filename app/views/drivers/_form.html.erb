@@ -1,0 +1,47 @@
+<%= form_with(model: driver, class: "contents") do |form| %>
+  <% if driver.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(driver.errors.count, "error") %> prohibited this driver from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% driver.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": driver.errors[:name].none?, "border-red-400 focus:outline-red-600": driver.errors[:name].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :username %>
+    <%= form.text_field :username, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": driver.errors[:username].none?, "border-red-400 focus:outline-red-600": driver.errors[:username].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :password %>
+    <%= form.text_field :password, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": driver.errors[:password].none?, "border-red-400 focus:outline-red-600": driver.errors[:password].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :samsara_id %>
+    <%= form.text_field :samsara_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": driver.errors[:samsara_id].none?, "border-red-400 focus:outline-red-600": driver.errors[:samsara_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :phone_number %>
+    <%= form.text_field :phone_number, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": driver.errors[:phone_number].none?, "border-red-400 focus:outline-red-600": driver.errors[:phone_number].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :status %>
+    <%= form.number_field :status, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": driver.errors[:status].none?, "border-red-400 focus:outline-red-600": driver.errors[:status].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>
