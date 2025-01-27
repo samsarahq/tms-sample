@@ -1,26 +1,17 @@
-<div id="<%= dom_id driver %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= driver.name %>
-  </p>
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Username:</strong>
-    <%= driver.username %>
-  </p>
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Password:</strong>
-    <%= driver.password %>
-  </p>
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Samsara:</strong>
-    <%= driver.samsara_id %>
-  </p>
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Phone number:</strong>
-    <%= driver.phone_number %>
-  </p>
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Status:</strong>
-    <%= driver.status %>
-  </p>
+<div id="<%= dom_id driver %>" class="space-y-4">
+  <div>
+    <h2 class="text-2xl font-bold"><%= driver.name %></h2>
+    <div class="text-lg"><%= driver.phone_number&.phony_formatted %></div>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <div class="text-sm font-medium"><%= driver.username %></div>
+    <span class="px-2 py-1 text-sm font-medium rounded-full <%= driver.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+      <%= driver.status.titleize %>
+    </span>
+  </div>
+
+  <div class="text-sm text-gray-500">
+    Samsara ID: <%= driver.samsara_id %>
+  </div>
 </div>

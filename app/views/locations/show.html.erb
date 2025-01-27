@@ -1,0 +1,79 @@
+<% content_for :title, "Showing location" %>
+
+<div class="md:w-2/3 w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <h1 class="font-bold text-4xl">Showing location</h1>
+  <div id="map" class="w-full h-96 mb-6 rounded-lg shadow-md"></div>
+
+  <script>
+    function initMap() {
+      const location = {
+        lat: <%= @location.latitude %>,
+        lng: <%= @location.longitude %>
+      };
+
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 16,
+        center: location,
+      });
+
+      // Add marker for the location
+      new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "<%= @location.name %>"
+      });
+
+      <% if @location.geofence.present? %>
+        <% if @location.geofence["circle"].present? %>
+          // Draw circular geofence
+          new google.maps.Circle({
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.15,
+            map,
+            center: {
+              lat: <%= @location.geofence["circle"]["latitude"] %>,
+              lng: <%= @location.geofence["circle"]["longitude"] %>
+            },
+            radius: <%= @location.geofence["circle"]["radiusMeters"] %>
+          });
+        <% elsif @location.geofence["polygon"].present? %>
+          // Draw polygon geofence
+          const polygonCoords = [
+            <% @location.geofence["polygon"]["vertices"].each do |vertex| %>
+              { lat: <%= vertex["latitude"] %>, lng: <%= vertex["longitude"] %> },
+            <% end %>
+          ];
+
+          new google.maps.Polygon({
+            paths: polygonCoords,
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.15,
+            map: map
+          });
+        <% end %>
+      <% end %>
+    }
+  </script>
+
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDajwFDfpgmYHhj-74PwFTaL2v_vuN4_bk&callback=initMap">
+  </script>
+
+  <%= render @location %>
+
+  <%= link_to "Edit this location", edit_location_path(@location), class: "mt-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to locations", locations_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="inline-block ml-2">
+    <%= button_to "Destroy this location", @location, method: :delete, class: "mt-2 rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium" %>
+  </div>
+</div>

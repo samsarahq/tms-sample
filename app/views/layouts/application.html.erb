@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Mini Tms" %></title>
+    <title><%= content_for(:title) || "Mini TMS" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -24,7 +24,44 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <nav class="bg-gray-800">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="flex justify-between w-full">
+                <span class="text-white font-bold text-xl">Mini TMS</span>
+              </div>
+            </div>
+            <div class="hidden md:block">
+              <div class="ml-10 flex items-baseline space-x-4">
+                <%= link_to "Drivers", drivers_path,
+                    class: "#{active_link?('/drivers')} rounded-md px-3 py-2 text-sm font-medium" %>
+
+                <%= link_to "Vehicles", vehicles_path,
+                    class: "#{active_link?('/vehicles')} rounded-md px-3 py-2 text-sm font-medium" %>
+
+                <%= link_to "Locations", locations_path,
+                    class: "#{active_link?('/locations')} rounded-md px-3 py-2 text-sm font-medium" %>
+
+                <%= link_to "Dispatch", dispatch_path,
+                    class: "#{active_link?('/dispatch')} rounded-md px-3 py-2 text-sm font-medium" %>
+              </div>
+            </div>
+          </div>
+          <div class="hidden md:block ml-auto">
+            <div class="flex items-center gap-2">
+              <span class="text-white text-sm"><%= current_user&.email_address %></span>
+              <img src="https://www.gravatar.com/avatar/<%= Digest::MD5.hexdigest(current_user&.email_address.to_s.downcase) %>?s=32&d=mp"
+                   class="w-8 h-8 rounded-full"
+                   alt="User avatar">
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mx-auto mt-8 px-5 max-w-7xl px-4 sm:px-6 lg:px-8">
       <%= yield %>
     </main>
   </body>

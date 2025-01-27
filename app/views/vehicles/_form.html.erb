@@ -1,0 +1,67 @@
+<%= form_with(model: vehicle, class: "contents") do |form| %>
+  <% if vehicle.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% vehicle.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :make %>
+    <%= form.text_field :make, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:make].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:make].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :model %>
+    <%= form.text_field :model, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:model].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:model].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:name].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:name].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :year %>
+    <%= form.text_field :year, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:year].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:year].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :samsara_id %>
+    <%= form.text_field :samsara_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:samsara_id].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:samsara_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :notes %>
+    <%= form.textarea :notes, rows: 4, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:notes].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:notes].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :vin %>
+    <%= form.text_field :vin, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:vin].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:vin].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :latitude %>
+    <%= form.text_field :latitude, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:latitude].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:latitude].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :longitude %>
+    <%= form.text_field :longitude, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:longitude].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:longitude].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:user_id].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:user_id].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

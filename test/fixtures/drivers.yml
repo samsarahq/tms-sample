@@ -4,13 +4,22 @@
 #
 #  id           :integer          not null, primary key
 #  name         :string
-#  username     :string
 #  password     :string
-#  samsara_id   :string
 #  phone_number :string
 #  status       :integer
+#  username     :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  samsara_id   :string
+#  user_id      :integer
+#
+# Indexes
+#
+#  index_drivers_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id)
 #
 
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

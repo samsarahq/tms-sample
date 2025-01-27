@@ -1,0 +1,21 @@
+<div>
+  <h1 class="font-bold text-4xl">
+    Mini TMS
+  </h1>
+  <div>
+    Welcome, <%= current_user.email_address %>
+  </div>
+
+  <% if current_user.samsara_credentials.present? %>
+    <% credentials = current_user.samsara_credentials %>
+    <% if !credentials.blank? %>
+      <div class="mt-4 text-sm text-gray-500">
+        Samsara credentials expire at: <%= Time.at(credentials["expires_at"]).strftime("%B %d, %Y at %I:%M %p") %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= link_to "Connect to Samsara",
+      "/auth/samsara",
+      class: "mt-4 rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+</div>

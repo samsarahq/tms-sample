@@ -3,7 +3,7 @@ class DriversController < ApplicationController
 
   # GET /drivers or /drivers.json
   def index
-    @drivers = Driver.all
+    @drivers = current_user.drivers.all
   end
 
   # GET /drivers/1 or /drivers/1.json
@@ -12,7 +12,7 @@ class DriversController < ApplicationController
 
   # GET /drivers/new
   def new
-    @driver = Driver.new(
+    @driver = current_user.drivers.new(
       status: :active,
       name: Faker::Name.name,
       username: Faker::Internet.username,
@@ -27,7 +27,7 @@ class DriversController < ApplicationController
 
   # POST /drivers or /drivers.json
   def create
-    @driver = Driver.new(driver_params)
+    @driver = current_user.drivers.new(driver_params)
 
     respond_to do |format|
       if @driver.save
@@ -63,10 +63,16 @@ class DriversController < ApplicationController
     end
   end
 
+  def fetch
+    Samsara::DriverService.new(current_user).fetch_drivers
+
+    redirect_to drivers_path, notice: "Drivers fetched from Samsara."
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_driver
-      @driver = Driver.find(params.expect(:id))
+      @driver = current_user.drivers.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,17 +1,28 @@
 Rails.application.routes.draw do
+  # Authentication
+  get "sign_up", to: "registrations#new"
+  post "sign_up", to: "registrations#create"
   resource :session
   resources :passwords, param: :token
-  resources :drivers
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  concern :fetchable do
+    collection do
+      get :fetch
+    end
+  end
+
+  resources :drivers, concerns: :fetchable
+  resources :vehicles, concerns: :fetchable
+  resources :locations, concerns: :fetchable
+
+  resource :dispatch
+  get "/auth/samsara", to: "auths#samsara"
+  get "/auth/samsara/callback", to: "auths#samsara_callback"
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  root "static_pages#root"
 end

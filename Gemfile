@@ -56,7 +56,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  gem "annotate"
+  gem "annotaterb"
 end
 
 group :test do
@@ -66,3 +66,8 @@ group :test do
 end
 
 gem "faker", "~> 3.5"
+
+# Standard library for making HTTP requests
+gem "net-http"
+
+gem "phony_rails", "~> 0.15.0"
