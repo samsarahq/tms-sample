@@ -12,7 +12,13 @@ class DriversController < ApplicationController
 
   # GET /drivers/new
   def new
-    @driver = Driver.new
+    @driver = Driver.new(
+      status: :active,
+      name: Faker::Name.name,
+      username: Faker::Internet.username,
+      password: Faker::Internet.password,
+      phone_number: Faker::PhoneNumber.cell_phone_in_e164,
+    )
   end
 
   # GET /drivers/1/edit
