@@ -9,14 +9,13 @@
 
   <%= render @driver %>
 
-
   <div class="grid grid-cols-2 md:grid-cols-4 gap-6 my-8">
     <!-- Break Timer -->
     <div class="flex flex-col items-center">
       <div class="w-24 h-24 rounded-full border-4 border-blue-500 flex items-center justify-center">
         <div class="text-center">
           <div class="text-xl font-bold">
-            <%= ((@driver.clocks&.dig("break", "timeUntilBreakDurationMs") || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            <%= ((@driver.clocks.time_until_break_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
           </div>
           <div class="text-xs text-gray-500">Until Break</div>
         </div>
@@ -28,7 +27,7 @@
       <div class="w-24 h-24 rounded-full border-4 border-green-500 flex items-center justify-center">
         <div class="text-center">
           <div class="text-xl font-bold">
-            <%= ((@driver.clocks&.dig("drive", "driveRemainingDurationMs") || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            <%= ((@driver.clocks.drive_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
           </div>
           <div class="text-xs text-gray-500">Drive Time</div>
         </div>
@@ -40,7 +39,7 @@
       <div class="w-24 h-24 rounded-full border-4 border-yellow-500 flex items-center justify-center">
         <div class="text-center">
           <div class="text-xl font-bold">
-            <%= ((@driver.clocks&.dig("shift", "shiftRemainingDurationMs") || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            <%= ((@driver.clocks.shift_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
           </div>
           <div class="text-xs text-gray-500">Shift Time</div>
         </div>
@@ -52,14 +51,13 @@
       <div class="w-24 h-24 rounded-full border-4 border-purple-500 flex items-center justify-center">
         <div class="text-center">
           <div class="text-xl font-bold">
-            <%= ((@driver.clocks&.dig("cycle", "cycleRemainingDurationMs") || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            <%= ((@driver.clocks.cycle_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
           </div>
           <div class="text-xs text-gray-500">Cycle Time</div>
         </div>
       </div>
     </div>
   </div>
-
 
   <%= link_to "Edit this driver", edit_driver_path(@driver), class: "mt-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= link_to "Back to drivers", drivers_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>

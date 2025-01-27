@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_27_180210) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_27_231437) do
   create_table "drivers", force: :cascade do |t|
     t.string "name"
     t.string "username"
@@ -22,6 +22,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_27_180210) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_drivers_on_user_id"
+  end
+
+  create_table "hours_of_service_clocks", force: :cascade do |t|
+    t.integer "driver_id", null: false
+    t.integer "time_until_break_ms"
+    t.integer "drive_time_left_ms"
+    t.integer "shift_time_left_ms"
+    t.integer "cycle_time_left_ms"
+    t.integer "duty_status", default: 0
+    t.integer "shift_violation_ms"
+    t.integer "cycle_violation_ms"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["driver_id"], name: "index_hours_of_service_clocks_on_driver_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -74,6 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_27_180210) do
   end
 
   add_foreign_key "drivers", "users"
+  add_foreign_key "hours_of_service_clocks", "drivers"
   add_foreign_key "locations", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "vehicles", "users"

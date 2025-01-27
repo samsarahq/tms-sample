@@ -26,16 +26,36 @@ class Driver < ApplicationRecord
   belongs_to :user
 
   validates :name, :username, :password, :phone_number, presence: true
+  has_one :hours_of_service_clock, dependent: :destroy
 
-  phony_normalize :phone_number, as: :phone_number_normalized_version, default_country_code: 'US'
+  phony_normalize :phone_number, default_country_code: 'US'
 
   enum :status, { active: 0, deactivated: 1 }
 
-  def hos
-    @hos ||= Samsara::Client.new(user).driver_clocks(samsara_id)[0]
-  end
-
   def clocks
-    @clocks ||= hos.fetch("clocks", {})
+    if hours_of_service_clock.nil?
+      clock = HoursOfServiceClock.new(driver: self)
+    else
+      clock = hours_of_service_clock
+    end
+
+    if clock.updated_at.nil? || clock.updated_at < 1.hour.ago
+      hos = Samsara::Client.new(user).driver_clocks(samsara_id).first
+      p hos
+      clocks = hos.fetch("clocks", {})
+      clock.update!(
+        time_until_break_ms: clocks.dig("break", "timeUntilBreakDurationMs"),
+        drive_time_left_ms: clocks.dig("drive", "driveRemainingDurationMs"),
+        shift_time_left_ms: clocks.dig("shift", "shiftRemainingDurationMs"),
+        cycle_time_left_ms: clocks.dig("cycle", "cycleRemainingDurationMs"),
+        duty_status: hos.dig("currentDutyStatus", "hosStatusType"),
+        shift_violation_ms: hos.dig("violations", "shiftDrivingViolationDurationMs"),
+        cycle_violation_ms: hos.dig("violations", "cycleViolationDurationMs")
+      )
+      update!(hours_of_service_clock: clock)
+    end
+
+    clock
   end
 end
+
