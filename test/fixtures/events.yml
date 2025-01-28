@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: events
+#
+#  id                :integer          not null, primary key
+#  event_type        :string
+#  payload           :json
+#  processing_errors :text
+#  source            :string
+#  status            :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  event_id          :string
+#
+one:
+  source: MyString
+  payload: 
+  status: MyString
+  processing_errors: MyText
+
+two:
+  source: MyString
+  payload: 
+  status: MyString
+  processing_errors: MyText

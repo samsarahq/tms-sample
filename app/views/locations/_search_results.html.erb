@@ -1,0 +1,12 @@
+<% if @locations.any? %>
+  <% @locations.each do |location| %>
+    <div class="p-2 hover:bg-gray-100 cursor-pointer"
+         data-id="<%= location.id %>"
+         data-name="<%= location.name %>">
+      <div class="font-medium"><%= location.name %></div>
+      <div class="text-sm text-gray-500"><%= location.address %></div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="p-2 text-gray-500">No locations found</div>
+<% end %>

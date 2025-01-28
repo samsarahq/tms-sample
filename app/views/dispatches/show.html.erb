@@ -1,0 +1,197 @@
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold text-gray-900">Dispatch</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Real-time view of all drivers' hours of service status and remaining time.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Driver</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Drive Time Left</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Shift Time Left</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Cycle Time Left</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Time Until Break</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Violations</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <% current_user.drivers.each do |driver| %>
+              <% clocks = driver.clocks %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm">
+                  <div class="flex items-center">
+                    <div>
+                      <div class="font-medium text-gray-900"><%= link_to driver.name, driver_path(driver), class: "hover:text-blue-600" %></div>
+                      <div class="text-gray-500"><%= driver.phone_number&.phony_formatted %></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm">
+                  <span class="<%= duty_status_color(clocks.duty_status) %> inline-flex rounded-full px-2 text-xs font-semibold leading-5">
+                    <%= clocks.duty_status&.titleize %>
+                  </span>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= format_duration(clocks.drive_time_left_ms) %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= format_duration(clocks.shift_time_left_ms) %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= format_duration(clocks.cycle_time_left_ms) %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= format_duration(clocks.time_until_break_ms) %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm">
+                  <% if clocks.shift_violation_ms&.positive? || clocks.cycle_violation_ms&.positive? %>
+                    <span class="text-red-600 font-medium">
+                      <%= "Shift: #{format_duration(clocks.shift_violation_ms)}" if clocks.shift_violation_ms&.positive? %>
+                      <%= "Cycle: #{format_duration(clocks.cycle_violation_ms)}" if clocks.cycle_violation_ms&.positive? %>
+                    </span>
+                  <% else %>
+                    <span class="text-green-600">None</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <div class="mt-8">
+          <h2 class="text-lg font-medium text-gray-900 mb-4">Planned Orders</h2>
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">From</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">To</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Pickup Time</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Delivery Time</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% current_user.orders.where(status: :planned).each do |order| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
+                    <%= order.from_location.name %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">
+                    <%= order.to_location.name %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= order.requested_pickup_at.strftime("%B %d, %Y at %I:%M %p") %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= order.requested_delivery_at.strftime("%B %d, %Y at %I:%M %p") %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= order.description %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= link_to "View", order_path(order), class: "text-blue-600 hover:text-blue-800" %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <% unless order.order_stops.any? %>
+                      <div class="relative inline-block text-left" data-controller="dropdown">
+                        <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-action="click->dropdown#toggle">
+                          Add to Route
+                          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                          </svg>
+                        </button>
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100" role="menu" data-dropdown-target="menu">
+                          <div class="py-1">
+                            <% current_user.routes.where("scheduled_start_time > ?", Time.current).order(:scheduled_start_time).each do |route| %>
+                              <%= button_to route_order_stops_path(route), method: :post, params: { order_id: order.id }, class: "group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" do %>
+                                <%= route.name %> - <%= route.scheduled_start_time&.strftime("%B %d, %Y") %>
+                              <% end %>
+                            <% end %>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-8">
+          <h2 class="text-lg font-medium text-gray-900 mb-4">Upcoming Routes</h2>
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Name</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Driver</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Vehicle</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Start Time</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">End Time</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Stops</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% current_user.routes.where("scheduled_start_time > ?", Time.current).order(:scheduled_start_time).each do |route| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
+                    <%= route.name %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">
+                    <% if route.driver.nil? %>
+                      <%= form_with(model: route, local: true, class: "inline") do |f| %>
+                        <div class="relative" data-controller="typeahead" data-typeahead-url-value="/drivers">
+                          <%= f.hidden_field :driver_id %>
+                          <%= text_field_tag :driver_search, nil,
+                              class: "w-32 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm",
+                              data: {
+                                typeahead_target: "input",
+                                action: "input->typeahead#search"
+                              },
+                              placeholder: "Assign driver..." %>
+
+                          <div class="absolute z-10 w-full bg-white shadow-lg rounded-b-md border border-gray-200 mt-1 hidden"
+                               data-typeahead-target="results">
+                          </div>
+                        </div>
+                        <%= f.submit "Assign", class: "ml-2 rounded-md bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700" %>
+                      <% end %>
+                    <% else %>
+                      <%= route.driver.name %>
+                    <% end %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">
+                    <%= route.vehicle&.name || "Unassigned" %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= route.scheduled_start_time&.strftime("%B %d, %Y at %I:%M %p") %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= route.scheduled_end_time&.strftime("%B %d, %Y at %I:%M %p") %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= route.stops.count %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= link_to "View", route_path(route), class: "text-blue-600 hover:text-blue-800" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

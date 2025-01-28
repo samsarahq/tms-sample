@@ -1,0 +1,72 @@
+<%= form_with(model: [route, stop], class: "contents") do |form| %>
+  <% if stop.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(stop.errors.count, "error") %> prohibited this stop from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% stop.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :samsara_id %>
+    <%= form.text_field :samsara_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:samsara_id].none?, "border-red-400 focus:outline-red-600": stop.errors[:samsara_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :scheduled_arrival_time %>
+    <%= form.datetime_field :scheduled_arrival_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:scheduled_arrival_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:scheduled_arrival_time].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :scheduled_departure_time %>
+    <%= form.datetime_field :scheduled_departure_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:scheduled_departure_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:scheduled_departure_time].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :actual_arrival_time %>
+    <%= form.datetime_field :actual_arrival_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:actual_arrival_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:actual_arrival_time].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :actual_departure_time %>
+    <%= form.datetime_field :actual_departure_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:actual_departure_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:actual_departure_time].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :en_route_time %>
+    <%= form.datetime_field :en_route_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:en_route_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:en_route_time].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :state %>
+    <%= form.text_field :state, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:state].none?, "border-red-400 focus:outline-red-600": stop.errors[:state].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :live_sharing_url %>
+    <%= form.text_field :live_sharing_url, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:live_sharing_url].none?, "border-red-400 focus:outline-red-600": stop.errors[:live_sharing_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :notes %>
+    <%= form.textarea :notes, rows: 4, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:notes].none?, "border-red-400 focus:outline-red-600": stop.errors[:notes].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :route_id %>
+    <%= form.text_field :route_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:route_id].none?, "border-red-400 focus:outline-red-600": stop.errors[:route_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :location_id %>
+    <%= form.text_field :location_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:location_id].none?, "border-red-400 focus:outline-red-600": stop.errors[:location_id].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

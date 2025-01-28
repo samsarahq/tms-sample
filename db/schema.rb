@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_27_231437) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_28_211718) do
   create_table "drivers", force: :cascade do |t|
     t.string "name"
     t.string "username"
@@ -22,6 +22,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_27_231437) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_drivers_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "source"
+    t.json "payload"
+    t.string "status"
+    t.text "processing_errors"
+    t.string "event_type"
+    t.string "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "hours_of_service_clocks", force: :cascade do |t|
@@ -52,6 +63,49 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_27_231437) do
     t.index ["user_id"], name: "index_locations_on_user_id"
   end
 
+  create_table "order_stops", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.integer "stop_id", null: false
+    t.integer "stop_type", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_stops_on_order_id"
+    t.index ["stop_id"], name: "index_order_stops_on_stop_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "from_location_id", null: false
+    t.integer "to_location_id", null: false
+    t.integer "status", default: 0
+    t.datetime "requested_pickup_at"
+    t.datetime "requested_delivery_at"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["from_location_id"], name: "index_orders_on_from_location_id"
+    t.index ["to_location_id"], name: "index_orders_on_to_location_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "routes", force: :cascade do |t|
+    t.string "name"
+    t.datetime "scheduled_start_time"
+    t.datetime "scheduled_end_time"
+    t.datetime "actual_start_time"
+    t.datetime "actual_end_time"
+    t.json "settings"
+    t.integer "driver_id"
+    t.integer "vehicle_id"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "samsara_id"
+    t.index ["driver_id"], name: "index_routes_on_driver_id"
+    t.index ["user_id"], name: "index_routes_on_user_id"
+    t.index ["vehicle_id"], name: "index_routes_on_vehicle_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -59,6 +113,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_27_231437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "stops", force: :cascade do |t|
+    t.string "samsara_id"
+    t.datetime "scheduled_arrival_time"
+    t.datetime "scheduled_departure_time"
+    t.datetime "actual_arrival_time"
+    t.datetime "actual_departure_time"
+    t.datetime "en_route_time"
+    t.integer "state", default: 0
+    t.string "live_sharing_url"
+    t.text "notes"
+    t.integer "route_id", null: false
+    t.integer "location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_stops_on_location_id"
+    t.index ["route_id"], name: "index_stops_on_route_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -90,6 +162,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_27_231437) do
   add_foreign_key "drivers", "users"
   add_foreign_key "hours_of_service_clocks", "drivers"
   add_foreign_key "locations", "users"
+  add_foreign_key "order_stops", "orders"
+  add_foreign_key "order_stops", "stops"
+  add_foreign_key "orders", "locations", column: "from_location_id"
+  add_foreign_key "orders", "locations", column: "to_location_id"
+  add_foreign_key "orders", "users"
+  add_foreign_key "routes", "drivers"
+  add_foreign_key "routes", "users"
+  add_foreign_key "routes", "vehicles"
   add_foreign_key "sessions", "users"
+  add_foreign_key "stops", "locations"
+  add_foreign_key "stops", "routes"
   add_foreign_key "vehicles", "users"
 end

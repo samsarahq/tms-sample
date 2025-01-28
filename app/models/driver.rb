@@ -41,7 +41,6 @@ class Driver < ApplicationRecord
 
     if clock.updated_at.nil? || clock.updated_at < 1.hour.ago
       hos = Samsara::Client.new(user).driver_clocks(samsara_id).first
-      p hos
       clocks = hos.fetch("clocks", {})
       clock.update!(
         time_until_break_ms: clocks.dig("break", "timeUntilBreakDurationMs"),

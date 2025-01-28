@@ -6,7 +6,7 @@
 #  cycle_time_left_ms  :integer
 #  cycle_violation_ms  :integer
 #  drive_time_left_ms  :integer
-#  duty_status         :integer          default(0)
+#  duty_status         :integer          default("offDuty")
 #  shift_time_left_ms  :integer
 #  shift_violation_ms  :integer
 #  time_until_break_ms :integer

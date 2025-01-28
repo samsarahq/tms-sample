@@ -1,0 +1,44 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: orders
+#
+#  id                    :integer          not null, primary key
+#  description           :text
+#  requested_delivery_at :datetime
+#  requested_pickup_at   :datetime
+#  status                :integer          default("planned")
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  from_location_id      :integer          not null
+#  to_location_id        :integer          not null
+#  user_id               :integer          not null
+#
+# Indexes
+#
+#  index_orders_on_from_location_id  (from_location_id)
+#  index_orders_on_to_location_id    (to_location_id)
+#  index_orders_on_user_id           (user_id)
+#
+# Foreign Keys
+#
+#  from_location_id  (from_location_id => locations.id)
+#  to_location_id    (to_location_id => locations.id)
+#  user_id           (user_id => users.id)
+#
+one:
+  from_location: one
+  to_location: one
+  status: 1
+  requested_pickup_at: 2025-01-27 18:44:48
+  requested_delivery_at: 2025-01-27 18:44:48
+  description: MyText
+
+two:
+  from_location: two
+  to_location: two
+  status: 1
+  requested_pickup_at: 2025-01-27 18:44:48
+  requested_delivery_at: 2025-01-27 18:44:48
+  description: MyText

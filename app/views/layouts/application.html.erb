@@ -24,6 +24,7 @@
   </head>
 
   <body>
+    <% if authenticated? %>
     <nav class="bg-gray-800">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
@@ -40,6 +41,12 @@
 
                 <%= link_to "Vehicles", vehicles_path,
                     class: "#{active_link?('/vehicles')} rounded-md px-3 py-2 text-sm font-medium" %>
+
+                <%= link_to "Orders", orders_path,
+                    class: "#{active_link?('/orders')} rounded-md px-3 py-2 text-sm font-medium" %>
+
+                <%= link_to "Routes", routes_path,
+                    class: "#{active_link?('/routes')} rounded-md px-3 py-2 text-sm font-medium" %>
 
                 <%= link_to "Locations", locations_path,
                     class: "#{active_link?('/locations')} rounded-md px-3 py-2 text-sm font-medium" %>
@@ -60,6 +67,7 @@
         </div>
       </div>
     </nav>
+    <% end %>
 
     <main class="container mx-auto mt-8 px-5 max-w-7xl px-4 sm:px-6 lg:px-8">
       <%= yield %>

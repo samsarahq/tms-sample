@@ -11,11 +11,20 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :drivers, concerns: :fetchable
-  resources :vehicles, concerns: :fetchable
-  resources :locations, concerns: :fetchable
-
   resource :dispatch
+  resources :drivers, concerns: :fetchable
+  resources :locations, concerns: :fetchable
+  resources :orders
+  resources :routes, concerns: :fetchable do
+    resources :stops
+    resources :order_stops, only: [:create]
+  end
+  resources :vehicles, concerns: :fetchable
+
+  resources :webhooks, only: [:create]
+
+
+  # OAuth connection to Samsara
   get "/auth/samsara", to: "auths#samsara"
   get "/auth/samsara/callback", to: "auths#samsara_callback"
   get "up" => "rails/health#show", as: :rails_health_check

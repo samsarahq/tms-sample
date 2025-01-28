@@ -29,5 +29,5 @@
 class Vehicle < ApplicationRecord
   belongs_to :user
 
-  validates :make, :model, :name, :year, :vin, :samsara_id, presence: true
+  validates :make, :model, :year, :vin, :samsara_id, presence: true
 end

@@ -1,0 +1,224 @@
+<% content_for :title, "Showing route" %>
+
+<div class="md:w-2/3 w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <h1 class="font-bold text-4xl">Route #<%= @route.id %></h1>
+
+  <%= render @route %>
+
+  <div id="map" class="w-full h-96 mb-8 rounded-lg"></div>
+
+  <script>
+    function initMap() {
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer();
+      const bounds = new google.maps.LatLngBounds();
+
+      // Initialize the map with the first stop's location or a default center
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 13,
+        center: <% if @route.stops.any? %>
+          { lat: <%= @route.stops.first.location.latitude %>, lng: <%= @route.stops.first.location.longitude %> },
+        <% else %>
+          { lat: 37.7749, lng: -122.4194 }, // Default center if no stops
+        <% end %>
+        mapTypeId: google.maps.MapTypeId.ROADMAP // Add map type for better directions visibility
+      });
+
+      directionsRenderer.setMap(map);
+
+      const stops = [
+        <% @route.stops.order(:scheduled_arrival_time).each do |stop| %>
+          {
+            location: new google.maps.LatLng(<%= stop.location.latitude %>, <%= stop.location.longitude %>),
+            title: "<%= stop.location.name %>",
+            info: "<div class='p-2'>" +
+                  "<h3 class='font-bold'><%= stop.location.name %></h3>" +
+                  "<p class='text-sm text-gray-600'>" +
+                  "Arrival: <%= stop.scheduled_arrival_time&.strftime("%b %d, %H:%M") %><br>" +
+                  "Pickups: <%= stop.order_stops.pickup.count %><br>" +
+                  "Deliveries: <%= stop.order_stops.delivery.count %>" +
+                  "</p></div>"
+          },
+        <% end %>
+      ];
+
+      // Add markers for all stops
+      const infoWindow = new google.maps.InfoWindow();
+      stops.forEach((stop, index) => {
+        const marker = new google.maps.Marker({
+          position: stop.location,
+          map: map,
+          title: stop.title,
+          label: (index + 1).toString()
+        });
+
+        marker.addListener("click", () => {
+          infoWindow.setContent(stop.info);
+          infoWindow.open(map, marker);
+        });
+
+        bounds.extend(stop.location);
+      });
+
+      // Calculate and display route if there are at least 2 stops
+      if (stops.length >= 2) {
+        const waypoints = stops.slice(1, -1).map(stop => ({
+          location: stop.location,
+          stopover: true
+        }));
+
+        directionsService.route({
+          origin: stops[0].location,
+          destination: stops[stops.length - 1].location,
+          waypoints: waypoints,
+          optimizeWaypoints: false,
+          travelMode: google.maps.TravelMode.DRIVING,
+        })
+        .then((response) => {
+          directionsRenderer.setDirections(response);
+
+          // Calculate total distance and duration
+          let totalDistance = 0;
+          let totalDuration = 0;
+          response.routes[0].legs.forEach((leg) => {
+            totalDistance += leg.distance.value;
+            totalDuration += leg.duration.value;
+          });
+
+          // Display route summary
+          const routeSummary = document.getElementById('route-summary');
+          if (routeSummary) {
+            routeSummary.innerHTML = `
+              <div class="bg-gray-50 p-4 rounded-md mt-4">
+                <h3 class="font-semibold text-gray-700">Route Summary</h3>
+                <p class="text-sm text-gray-600">
+                  Total Distance: ${(totalDistance / 1000).toFixed(1)} km<br>
+                  Estimated Driving Time: ${Math.round(totalDuration / 60)} minutes
+                </p>
+              </div>
+            `;
+          }
+        })
+        .catch((e) => {
+          console.error("Directions request failed due to " + e);
+        });
+      } else {
+        // If there's only one stop or no stops, just fit the bounds
+        map.fitBounds(bounds);
+      }
+    }
+  </script>
+
+  <div id="route-summary"></div>
+
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDajwFDfpgmYHhj-74PwFTaL2v_vuN4_bk&callback=initMap">
+  </script>
+
+  <div class="mt-8">
+    <h2 class="text-2xl font-semibold mb-4">Stops</h2>
+
+    <% if @route.stops.any? %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scheduled Arrival</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scheduled Departure</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @route.stops.order(:scheduled_arrival_time).each do |stop| %>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= stop.location&.name %>
+                  <div class="text-xs text-gray-500 mt-1">
+                    <span class="mr-2">Pickups: <%= stop.order_stops.pickup.count %></span>
+                    <span>Deliveries: <%= stop.order_stops.delivery.count %></span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= stop.scheduled_arrival_time&.strftime("%b %d, %H:%M") %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= stop.scheduled_departure_time&.strftime("%b %d, %H:%M") %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800">
+                    <%= stop.state&.humanize&.downcase %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <%= link_to "Edit", edit_route_stop_path(@route, stop), class: "text-indigo-600 hover:text-indigo-900" %>
+                  <%= link_to "Delete", route_stop_path(@route, stop), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "ml-3 text-red-600 hover:text-red-900" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="text-gray-500 italic">No stops have been added to this route yet.</p>
+    <% end %>
+  </div>
+
+
+  <div class="mt-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Add Stop</h2>
+
+    <%= form_with(model: [@route, Stop.new], local: true, class: "space-y-4") do |f| %>
+      <div>
+        <%= f.label :location_id, "Location", class: "block text-sm font-medium text-gray-700" %>
+        <div class="relative" data-controller="typeahead" data-typeahead-url-value="/locations">
+          <%= f.hidden_field :location_id %>
+          <%= text_field_tag :location_search, nil,
+              class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500",
+              data: {
+                typeahead_target: "input",
+                action: "input->typeahead#search"
+              },
+              placeholder: "Search locations..." %>
+
+          <div class="absolute z-10 w-full bg-white shadow-lg rounded-b-md border border-gray-200 mt-1 hidden"
+               data-typeahead-target="results">
+          </div>
+
+          <%= link_to "Create New Location", new_location_path,
+              class: "text-sm text-blue-600 hover:text-blue-500 mt-1 inline-block" %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= f.label :scheduled_arrival_time, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.datetime_local_field :scheduled_arrival_time, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+        </div>
+
+        <div>
+          <%= f.label :scheduled_departure_time, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.datetime_local_field :scheduled_departure_time, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :notes, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_area :notes, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
+      </div>
+
+      <%= f.submit "Add Stop", class: "inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+    <% end %>
+  </div>
+
+  <%= link_to "Edit this route", edit_route_path(@route), class: "mt-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to routes", routes_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="inline-block ml-2">
+    <%= button_to "Destroy this route", @route, method: :delete, class: "mt-2 rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium" %>
+  </div>
+</div>

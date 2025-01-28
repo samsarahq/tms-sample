@@ -4,6 +4,14 @@ class LocationsController < ApplicationController
   # GET /locations or /locations.json
   def index
     @locations = current_user.locations.all
+
+    if params[:query].present?
+      @locations = @locations
+        .where("name LIKE :query OR formatted_address LIKE :query", query: "%#{params[:query]}%")
+        .limit(10)
+      render partial: "search_results", layout: false if request.xhr?
+      return
+    end
   end
 
   # GET /locations/1 or /locations/1.json

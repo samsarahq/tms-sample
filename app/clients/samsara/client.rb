@@ -10,10 +10,23 @@ module Samsara
 
     def access_token
       credentials = @user.samsara_credentials
+      if credentials.blank?
+        raise "No Samsara credentials found for user #{@user.id}"
+      end
+
+      if credentials["refresh_token"].blank?
+        raise "No refresh token found for user #{@user.id}"
+      end
+
       if credentials["expires_at"] < Time.now.to_i
         # Refresh the token
+        puts "Using refresh token to get new access token #{credentials["refresh_token"]}..."
         credentials = refresh_credentials(credentials["refresh_token"])
-        @user.update!(samsara_credentials: credentials)
+        if !credentials["access_token"].blank? && !credentials["refresh_token"].blank?
+          @user.update!(samsara_credentials: credentials)
+        else
+          raise "Failed to refresh credentials: #{credentials}"
+        end
       end
 
       credentials["access_token"]
@@ -50,6 +63,15 @@ module Samsara
       result.parsed_body["data"]
     end
 
+    def routes(start_time: 1.day.ago, end_time: 1.day.from_now, limit: 100)
+      result = get("/fleet/routes", query: {
+        startTime: start_time.iso8601,
+        endTime: end_time.iso8601,
+        limit: limit
+      })
+      result.parsed_body["data"]
+    end
+
     def oauth_auth_header
       client_id = Rails.application.credentials.samsara[:client_id]
       client_secret = Rails.application.credentials.samsara[:client_secret]
@@ -57,6 +79,7 @@ module Samsara
     end
 
     def refresh_credentials(refresh_token)
+      puts "REFRESHING CREDENTIALS...."
       uri = URI('https://api.samsara.com/oauth2/token')
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
@@ -70,6 +93,10 @@ module Samsara
       })
 
       response = http.request(request)
+      if response.code != "200"
+        raise "Failed to refresh credentials: #{response.body}"
+      end
+
       token_data = JSON.parse(response.body)
 
       # Calculate new expires_at timestamp

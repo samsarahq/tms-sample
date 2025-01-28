@@ -1,0 +1,78 @@
+<%= form_with(model: order, class: "contents") do |form| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% order.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :from_location_id, "From Location" %>
+    <div class="relative" data-controller="typeahead" data-typeahead-url-value="/locations">
+      <%= form.hidden_field :from_location_id %>
+      <%= text_field_tag :from_location_search, order.from_location&.name,
+          class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full",
+                 {"border-gray-400 focus:outline-blue-600": order.errors[:from_location_id].none?,
+                  "border-red-400 focus:outline-red-600": order.errors[:from_location_id].any?}],
+          data: {
+            typeahead_target: "input",
+            action: "input->typeahead#search"
+          },
+          placeholder: "Search locations..." %>
+
+      <div class="absolute z-10 w-full bg-white shadow-lg rounded-b-md border border-gray-200 mt-1 hidden"
+           data-typeahead-target="results">
+      </div>
+
+      <%= link_to "Create New Location", new_location_path,
+          class: "text-sm text-blue-600 hover:text-blue-500 mt-1 inline-block" %>
+    </div>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :to_location_id, "To Location" %>
+    <div class="relative" data-controller="typeahead" data-typeahead-url-value="/locations">
+      <%= form.hidden_field :to_location_id %>
+      <%= text_field_tag :to_location_search, order.to_location&.name,
+          class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full",
+                 {"border-gray-400 focus:outline-blue-600": order.errors[:to_location_id].none?,
+                  "border-red-400 focus:outline-red-600": order.errors[:to_location_id].any?}],
+          data: {
+            typeahead_target: "input",
+            action: "input->typeahead#search"
+          },
+          placeholder: "Search locations..." %>
+
+      <div class="absolute z-10 w-full bg-white shadow-lg rounded-b-md border border-gray-200 mt-1 hidden"
+           data-typeahead-target="results">
+      </div>
+
+      <%= link_to "Create New Location", new_location_path,
+          class: "text-sm text-blue-600 hover:text-blue-500 mt-1 inline-block" %>
+    </div>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :requested_pickup_at %>
+    <%= form.datetime_field :requested_pickup_at, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": order.errors[:requested_pickup_at].none?, "border-red-400 focus:outline-red-600": order.errors[:requested_pickup_at].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :requested_delivery_at %>
+    <%= form.datetime_field :requested_delivery_at, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": order.errors[:requested_delivery_at].none?, "border-red-400 focus:outline-red-600": order.errors[:requested_delivery_at].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :description %>
+    <%= form.textarea :description, rows: 4, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": order.errors[:description].none?, "border-red-400 focus:outline-red-600": order.errors[:description].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

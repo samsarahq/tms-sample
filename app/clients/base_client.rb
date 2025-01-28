@@ -179,6 +179,8 @@ class BaseClient
   def make_request(klass:, path:, headers: {}, body: nil, query: nil, form_data: nil, http_options: {})
     raise ArgumentError, "Cannot pass both body and form_data" if body.present? && form_data.present?
 
+    Rails.logger.debug("Request: #{klass.name.split("::").last.upcase}: #{path}")
+
     # If a full URL is passed in, use that, otherwise append to the base URI
     uri = path.start_with?("http") ? URI(path) : URI("#{base_uri}#{path}")
 
@@ -218,7 +220,11 @@ class BaseClient
       request.set_form(form_data, "multipart/form-data")
     end
 
-    handle_response self.class::Response.new(http.request(request))
+    response = self.class::Response.new(http.request(request))
+
+    Rails.logger.debug("response: #{response.body}")
+
+    handle_response response
   end
 
   # Handles an HTTP response
