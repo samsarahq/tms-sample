@@ -18,6 +18,8 @@ class StopsController < ApplicationController
 
   # GET /stops/1/edit
   def edit
+    @route = Route.find(params.expect(:route_id))
+    @stop = @route.stops.find(params.expect(:id))
   end
 
   # POST /stops or /stops.json
@@ -27,6 +29,8 @@ class StopsController < ApplicationController
 
     respond_to do |format|
       if @stop.save
+        Samsara::RouteService.new(current_user).sync_route(@stop.route)
+
         format.html { redirect_to @route, notice: "Stop was successfully created." }
         format.json { render :show, status: :created, location: @stop }
       else
@@ -40,6 +44,8 @@ class StopsController < ApplicationController
   def update
     respond_to do |format|
       if @stop.update(stop_params)
+        Samsara::RouteService.new(current_user).sync_route(@stop.route)
+
         format.html { redirect_to @stop.route, notice: "Stop was successfully updated." }
         format.json { render :show, status: :ok, location: @stop }
       else

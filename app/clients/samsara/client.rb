@@ -32,8 +32,23 @@ module Samsara
       credentials["access_token"]
     end
 
+    def addresses
+      result = get("/addresses")
+      result.parsed_body["data"]
+    end
+
     def drivers
       result = get("/fleet/drivers")
+      result.parsed_body["data"]
+    end
+
+    def update_driver(driver_id, body: {})
+      result = patch("/fleet/drivers/#{driver_id}", body: body)
+      result.parsed_body["data"]
+    end
+
+    def create_driver(body: {})
+      result = post("/fleet/drivers", body: body)
       result.parsed_body["data"]
     end
 
@@ -53,13 +68,18 @@ module Samsara
       result.parsed_body["data"]
     end
 
-    def addresses
-      result = get("/addresses")
+    def driver_clocks(driver_ids)
+      result = get("/fleet/hos/clocks", query: { driverIds: driver_ids })
       result.parsed_body["data"]
     end
 
-    def driver_clocks(driver_ids)
-      result = get("/fleet/hos/clocks", query: { driverIds: driver_ids })
+    def update_route(route_id, body: {})
+      result = patch("/fleet/routes/#{route_id}", body: body)
+      result.parsed_body["data"]
+    end
+
+    def create_route(body: {})
+      result = post("/fleet/routes", body: body)
       result.parsed_body["data"]
     end
 

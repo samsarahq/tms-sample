@@ -15,11 +15,30 @@
 
   <div id="routes" class="min-w-full">
     <% if @routes.any? %>
-      <% @routes.each do |route| %>
-        <%= render route %>
-        <p>
-          <%= link_to "Show this route", route, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-        </p>
+      <% @routes.order(id: :desc).each do |route| %>
+        <div class="flex items-center justify-between p-4 border-b">
+          <div class="flex items-center gap-4">
+            <div class="flex flex-col">
+              <h3 class="font-medium text-gray-900"><%= route.name %></h3>
+              <div class="text-sm text-gray-500">
+                <%= route.scheduled_start_time&.strftime("%b %d, %H:%M") %> - <%= route.scheduled_end_time&.strftime("%H:%M") %>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-600"><%= route.driver&.name&.first || '?' %></span>
+              </div>
+              <span class="text-sm text-gray-600"><%= route.driver&.name %></span>
+            </div>
+
+            <div class="text-sm text-gray-500">
+              <%= pluralize(route.stops.count, 'stop') %>
+            </div>
+          </div>
+
+          <%= link_to "View route", route, class: "rounded-md px-3.5 py-2 bg-gray-100 hover:bg-gray-50 text-sm font-medium" %>
+        </div>
       <% end %>
     <% else %>
       <p class="text-center my-10">No routes found.</p>

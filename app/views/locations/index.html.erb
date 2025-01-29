@@ -17,10 +17,16 @@
   <div id="locations" class="min-w-full">
     <% if @locations.any? %>
       <% @locations.each do |location| %>
-        <%= render location %>
-        <p>
-          <%= link_to "Show this location", location, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-        </p>
+        <div class="flex justify-between items-center py-4 border-b">
+          <div class="flex-1">
+            <div class="font-medium"><%= location.name %></div>
+            <div class="text-sm text-gray-500"><%= location.formatted_address %></div>
+            <div class="text-xs text-gray-400">
+              <%= location.latitude %>, <%= location.longitude %>
+            </div>
+          </div>
+          <%= link_to "View", location, class: "rounded-md px-3 py-1.5 bg-gray-100 hover:bg-gray-50 text-sm font-medium" %>
+        </div>
       <% end %>
     <% else %>
       <p class="text-center my-10">No locations found.</p>

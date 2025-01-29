@@ -3,8 +3,8 @@
 <div class="md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">Editing stop</h1>
 
-  <%= render "form", stop: @stop %>
+  <%= render "form", stop: @stop, route: @route %>
 
-  <%= link_to "Show this stop", @stop, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to stops", stops_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Show this stop", route_stop_path(@route, @stop), class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to stops", route_path(@route), class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
 </div>

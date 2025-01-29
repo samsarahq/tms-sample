@@ -41,4 +41,10 @@ class Stop < ApplicationRecord
     arrived: 4,
     departed: 5
   }
+
+  def full_notes
+    # Include the Order IDs of which orders are
+    # being picked up or delivered at this stop:
+    "#{notes}\n#{order_stops.map { |os| "#{os.stop_type.titleize} of Order ##{os.order.id}" }.join("\n")}"
+  end
 end

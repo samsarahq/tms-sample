@@ -28,6 +28,8 @@ class RoutesController < ApplicationController
 
     respond_to do |format|
       if @route.save
+        Samsara::RouteService.new(current_user).sync_route(@route)
+
         format.html { redirect_to @route, notice: "Route was successfully created." }
         format.json { render :show, status: :created, location: @route }
       else
@@ -41,6 +43,8 @@ class RoutesController < ApplicationController
   def update
     respond_to do |format|
       if @route.update(route_params)
+        Samsara::RouteService.new(current_user).sync_route(@route)
+
         format.html { redirect_to @route, notice: "Route was successfully updated." }
         format.json { render :show, status: :ok, location: @route }
       else

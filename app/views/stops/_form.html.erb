@@ -12,11 +12,6 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.label :samsara_id %>
-    <%= form.text_field :samsara_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:samsara_id].none?, "border-red-400 focus:outline-red-600": stop.errors[:samsara_id].any?}] %>
-  </div>
-
-  <div class="my-5">
     <%= form.label :scheduled_arrival_time %>
     <%= form.datetime_field :scheduled_arrival_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:scheduled_arrival_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:scheduled_arrival_time].any?}] %>
   </div>
@@ -27,43 +22,31 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :actual_arrival_time %>
-    <%= form.datetime_field :actual_arrival_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:actual_arrival_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:actual_arrival_time].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :actual_departure_time %>
-    <%= form.datetime_field :actual_departure_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:actual_departure_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:actual_departure_time].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :en_route_time %>
-    <%= form.datetime_field :en_route_time, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:en_route_time].none?, "border-red-400 focus:outline-red-600": stop.errors[:en_route_time].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :state %>
-    <%= form.text_field :state, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:state].none?, "border-red-400 focus:outline-red-600": stop.errors[:state].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :live_sharing_url %>
-    <%= form.text_field :live_sharing_url, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:live_sharing_url].none?, "border-red-400 focus:outline-red-600": stop.errors[:live_sharing_url].any?}] %>
-  </div>
-
-  <div class="my-5">
     <%= form.label :notes %>
     <%= form.textarea :notes, rows: 4, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:notes].none?, "border-red-400 focus:outline-red-600": stop.errors[:notes].any?}] %>
   </div>
 
   <div class="my-5">
-    <%= form.label :route_id %>
-    <%= form.text_field :route_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:route_id].none?, "border-red-400 focus:outline-red-600": stop.errors[:route_id].any?}] %>
-  </div>
+    <%= form.label :location_id, "Location" %>
+    <div class="relative" data-controller="typeahead" data-typeahead-url-value="/locations">
+      <%= form.hidden_field :location_id %>
+      <%= text_field_tag :location_search, stop.location&.name,
+          class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full",
+                 {"border-gray-400 focus:outline-blue-600": stop.errors[:location_id].none?,
+                  "border-red-400 focus:outline-red-600": stop.errors[:location_id].any?}],
+          data: {
+            typeahead_target: "input",
+            action: "input->typeahead#search"
+          },
+          placeholder: "Search locations..." %>
 
-  <div class="my-5">
-    <%= form.label :location_id %>
-    <%= form.text_field :location_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": stop.errors[:location_id].none?, "border-red-400 focus:outline-red-600": stop.errors[:location_id].any?}] %>
+      <div class="absolute z-10 w-full bg-white shadow-lg rounded-b-md border border-gray-200 mt-1 hidden"
+           data-typeahead-target="results">
+      </div>
+
+      <%= link_to "Create New Location", new_location_path,
+          class: "text-sm text-blue-600 hover:text-blue-500 mt-1 inline-block" %>
+    </div>
   </div>
 
   <div class="inline">

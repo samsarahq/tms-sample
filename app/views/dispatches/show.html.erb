@@ -3,7 +3,7 @@
     <div class="sm:flex-auto">
       <h1 class="text-2xl font-semibold text-gray-900">Dispatch</h1>
       <p class="mt-2 text-sm text-gray-700">
-        Real-time view of all drivers' hours of service status and remaining time.
+        Real-time view of all drivers hours of service status and remaining time.
       </p>
     </div>
   </div>
@@ -112,9 +112,9 @@
                         </button>
                         <div class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100" role="menu" data-dropdown-target="menu">
                           <div class="py-1">
-                            <% current_user.routes.where("scheduled_start_time > ?", Time.current).order(:scheduled_start_time).each do |route| %>
+                            <% current_user.routes.where("scheduled_end_time > ?", Time.current).order(:scheduled_start_time).each do |route| %>
                               <%= button_to route_order_stops_path(route), method: :post, params: { order_id: order.id }, class: "group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left" do %>
-                                <%= route.name %> - <%= route.scheduled_start_time&.strftime("%B %d, %Y") %>
+                                <%= route.name %> - <%= route.scheduled_start_time&.strftime("%b %-d at %H:%M") %>
                               <% end %>
                             <% end %>
                           </div>
@@ -143,7 +143,7 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-              <% current_user.routes.where("scheduled_start_time > ?", Time.current).order(:scheduled_start_time).each do |route| %>
+              <% current_user.routes.where("scheduled_end_time > ?", Time.current).order(:scheduled_start_time).each do |route| %>
                 <tr>
                   <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
                     <%= route.name %>

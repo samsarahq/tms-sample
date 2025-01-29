@@ -27,4 +27,11 @@ class OrderStop < ApplicationRecord
     pickup: 0,
     delivery: 1,
   }
+
+  def stop_type_past_tense
+    {
+      pickup: "picked up",
+      delivery: "delivered",
+    }[stop_type.to_sym]
+  end
 end

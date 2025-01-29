@@ -17,7 +17,7 @@ class DriversController < ApplicationController
       name: Faker::Name.name,
       username: Faker::Internet.username,
       password: Faker::Internet.password,
-      phone_number: Faker::PhoneNumber.cell_phone_in_e164,
+      phone_number: PhonyRails.normalize_number(Faker::PhoneNumber.phone_number, country_code: 'US')
     )
   end
 
@@ -31,6 +31,8 @@ class DriversController < ApplicationController
 
     respond_to do |format|
       if @driver.save
+        Samsara::DriverService.new(current_user).sync_driver(@driver)
+
         format.html { redirect_to @driver, notice: "Driver was successfully created." }
         format.json { render :show, status: :created, location: @driver }
       else
@@ -44,6 +46,8 @@ class DriversController < ApplicationController
   def update
     respond_to do |format|
       if @driver.update(driver_params)
+        Samsara::DriverService.new(current_user).sync_driver(@driver)
+
         format.html { redirect_to @driver, notice: "Driver was successfully updated." }
         format.json { render :show, status: :ok, location: @driver }
       else
@@ -55,7 +59,9 @@ class DriversController < ApplicationController
 
   # DELETE /drivers/1 or /drivers/1.json
   def destroy
-    @driver.destroy!
+    Samsara::DriverService.new(current_user).deactivate_driver(@driver)
+
+    @driver.update!(status: :deactivated)
 
     respond_to do |format|
       format.html { redirect_to drivers_path, status: :see_other, notice: "Driver was successfully destroyed." }

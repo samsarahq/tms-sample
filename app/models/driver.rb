@@ -25,7 +25,7 @@
 class Driver < ApplicationRecord
   belongs_to :user
 
-  validates :name, :username, :password, :phone_number, presence: true
+  validates :name, :username, :password, presence: true
   has_one :hours_of_service_clock, dependent: :destroy
 
   phony_normalize :phone_number, default_country_code: 'US'
@@ -41,6 +41,7 @@ class Driver < ApplicationRecord
 
     if clock.updated_at.nil? || clock.updated_at < 1.hour.ago
       hos = Samsara::Client.new(user).driver_clocks(samsara_id).first
+      return clock if hos.blank?
       clocks = hos.fetch("clocks", {})
       clock.update!(
         time_until_break_ms: clocks.dig("break", "timeUntilBreakDurationMs"),
