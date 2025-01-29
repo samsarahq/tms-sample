@@ -24,6 +24,7 @@
 #
 class Location < ApplicationRecord
   belongs_to :user
+  has_many :stops, dependent: :destroy
 
   validates :name, :formatted_address, presence: true
 end

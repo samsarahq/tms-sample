@@ -13,7 +13,10 @@ class StopsController < ApplicationController
   # GET /stops/new
   def new
     @route = Route.find(params.expect(:route_id))
-    @stop = @route.stops.new
+    @stop = @route.stops.new(
+      scheduled_arrival_time: @route.scheduled_start_time,
+      scheduled_departure_time: @route.scheduled_start_time + 5.minutes
+    )
   end
 
   # GET /stops/1/edit

@@ -6,6 +6,8 @@ module Samsara
     end
 
     def sync_route(route)
+      return if route.stops.count < 2
+
       route_params = {
         name: route.name,
         driverId: route.driver&.samsara_id,

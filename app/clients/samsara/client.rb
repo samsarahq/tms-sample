@@ -37,6 +37,16 @@ module Samsara
       result.parsed_body["data"]
     end
 
+    def create_address(body: {})
+      result = post("/addresses", body: body)
+      result.parsed_body["data"]
+    end
+
+    def update_address(address_id, body: {})
+      result = patch("/addresses/#{address_id}", body: body)
+      result.parsed_body["data"]
+    end
+
     def drivers
       result = get("/fleet/drivers")
       result.parsed_body["data"]

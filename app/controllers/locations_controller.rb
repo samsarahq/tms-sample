@@ -20,7 +20,7 @@ class LocationsController < ApplicationController
 
   # GET /locations/new
   def new
-    @location = Location.new
+    @location = current_user.locations.new
   end
 
   # GET /locations/1/edit
@@ -33,6 +33,8 @@ class LocationsController < ApplicationController
 
     respond_to do |format|
       if @location.save
+        Samsara::AddressService.new(current_user).sync_address(@location)
+
         format.html { redirect_to @location, notice: "Location was successfully created." }
         format.json { render :show, status: :created, location: @location }
       else
@@ -46,6 +48,8 @@ class LocationsController < ApplicationController
   def update
     respond_to do |format|
       if @location.update(location_params)
+        Samsara::AddressService.new(current_user).sync_address(@location)
+
         format.html { redirect_to @location, notice: "Location was successfully updated." }
         format.json { render :show, status: :ok, location: @location }
       else
@@ -78,6 +82,6 @@ class LocationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def location_params
-      params.expect(location: [ :user_id, :name, :samsara_id, :formatted_address, :geofence, :latitude, :longitude ])
+      params.expect(location: [:name, :formatted_address, :geofence, :latitude, :longitude ])
     end
 end

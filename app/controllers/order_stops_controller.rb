@@ -13,7 +13,8 @@ class OrderStopsController < ApplicationController
       else
         new_pickup_stop = @route.stops.create!(
           location: @order.from_location,
-          scheduled_arrival_time: @route.scheduled_start_time
+          scheduled_arrival_time: @route.scheduled_start_time,
+          scheduled_departure_time: @route.scheduled_start_time + 5.minutes
         )
         OrderStop.create!(order: @order, stop: new_pickup_stop, stop_type: :pickup)
         stops_changed = true
@@ -26,7 +27,8 @@ class OrderStopsController < ApplicationController
       else
         new_delivery_stop = @route.stops.create!(
           location: @order.to_location,
-          scheduled_arrival_time: @route.scheduled_start_time
+          scheduled_arrival_time: @route.scheduled_start_time,
+          scheduled_departure_time: @route.scheduled_start_time + 5.minutes
         )
         OrderStop.create!(order: @order, stop: new_delivery_stop, stop_type: :delivery)
         stops_changed = true
