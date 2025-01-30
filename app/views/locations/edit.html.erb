@@ -3,7 +3,41 @@
 <div class="md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">Editing location</h1>
 
-  <%= render "form", location: @location %>
+  <div class="my-5"
+      data-controller="geofence-editor"
+      data-geofence-editor-geofence-value="<%= @location.geofence.to_json %>"
+      data-geofence-editor-latitude-value="<%= @location.latitude %>"
+      data-geofence-editor-longitude-value="<%= @location.longitude %>">
+
+    <div id="map" class="h-96 w-full rounded-md border border-gray-300">
+    </div>
+
+    <div class="mt-4 flex gap-3">
+      <button type="button"
+              class="rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium"
+              data-action="geofence-editor#startDrawing">
+        Draw New Geofence
+      </button>
+
+      <button type="button"
+              class="rounded-md px-3.5 py-2.5 bg-red-600 hover:bg-red-500 text-white font-medium"
+              data-action="geofence-editor#clearGeofence">
+        Clear Geofence
+      </button>
+
+      <%= form_with(model: @location) do |form| %>
+        <%= form.hidden_field :geofence, name: "location[geofence]", data: { geofence_editor_target: "geofenceField" } %>
+        <%= form.submit "Save", class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium" %>
+      <% end %>
+
+    </div>
+
+    <div class="mt-2 text-sm text-gray-600">
+      Click points on the map to draw a polygon. Click the first point to complete the shape.
+      Drag existing points to adjust the geofence boundaries.
+    </div>
+  </div>
+
 
   <%= link_to "Show this location", @location, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
   <%= link_to "Back to locations", locations_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>

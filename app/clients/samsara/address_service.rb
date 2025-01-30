@@ -24,20 +24,25 @@ module Samsara
         samsara_address = @client.create_address(body: payload)
         address.update!(samsara_id: samsara_address["id"])
       else
-        payload[:geofence] = address.geofence
+        # if address.geofence.present? && address.geofence.is_a?(String)
+        #   payload[:geofence] = JSON.parse(address.geofence)
+        # else
+          payload[:geofence] = address.geofence
+        # end
         @client.update_address(address.samsara_id, body: payload)
       end
     end
 
     def fetch_addresses
       @client.addresses.each do |address|
-        @user.locations.find_or_create_by!(samsara_id: address["id"]) do |location|
-          location.name = address["name"]
-          location.formatted_address = address["formattedAddress"]
-          location.latitude = address["latitude"]
-          location.longitude = address["longitude"]
-          location.geofence = address["geofence"]
-        end
+        addy = @user.locations.find_or_create_by!(samsara_id: address["id"])
+        addy.update(
+          name: address["name"],
+          formatted_address: address["formattedAddress"],
+          latitude: address["latitude"],
+          longitude: address["longitude"],
+          geofence: address["geofence"],
+        )
       end
     end
   end

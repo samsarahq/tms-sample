@@ -82,6 +82,25 @@ class LocationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def location_params
-      params.expect(location: [:name, :formatted_address, :geofence, :latitude, :longitude ])
+      # Get the raw parameters
+      permitted_params = params.require(:location).permit(
+        :name,
+        :formatted_address,
+        :latitude,
+        :longitude,
+        :geofence
+      )
+
+      # Parse geofence JSON if present
+      if permitted_params[:geofence].present?
+        begin
+          permitted_params[:geofence] = JSON.parse(permitted_params[:geofence])
+        rescue JSON::ParserError => e
+          Rails.logger.error "Failed to parse geofence JSON: #{e.message}"
+          permitted_params[:geofence] = nil
+        end
+      end
+
+      permitted_params
     end
 end
