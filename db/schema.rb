@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_28_211718) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_30_195202) do
+  create_table "chat_messages", force: :cascade do |t|
+    t.integer "driver_id", null: false
+    t.integer "user_id", null: false
+    t.string "body", default: "", null: false
+    t.string "sender_name"
+    t.string "sender_type"
+    t.boolean "read", default: false, null: false
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["driver_id"], name: "index_chat_messages_on_driver_id"
+    t.index ["user_id"], name: "index_chat_messages_on_user_id"
+  end
+
   create_table "drivers", force: :cascade do |t|
     t.string "name"
     t.string "username"
@@ -47,6 +61,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_211718) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["driver_id"], name: "index_hours_of_service_clocks_on_driver_id"
+  end
+
+  create_table "kafka_messages", force: :cascade do |t|
+    t.string "topic", null: false
+    t.string "key"
+    t.json "payload", default: {}
+    t.text "processing_errors", default: ""
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -133,6 +156,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_211718) do
     t.index ["route_id"], name: "index_stops_on_route_id"
   end
 
+  create_table "trailers", force: :cascade do |t|
+    t.string "name"
+    t.string "make"
+    t.string "model"
+    t.text "notes"
+    t.string "vin"
+    t.integer "year"
+    t.string "license_plate"
+    t.string "samsara_id"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_trailers_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -159,6 +197,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_211718) do
     t.index ["user_id"], name: "index_vehicles_on_user_id"
   end
 
+  add_foreign_key "chat_messages", "drivers"
+  add_foreign_key "chat_messages", "users"
   add_foreign_key "drivers", "users"
   add_foreign_key "hours_of_service_clocks", "drivers"
   add_foreign_key "locations", "users"
@@ -173,5 +213,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_211718) do
   add_foreign_key "sessions", "users"
   add_foreign_key "stops", "locations"
   add_foreign_key "stops", "routes"
+  add_foreign_key "trailers", "users"
   add_foreign_key "vehicles", "users"
 end

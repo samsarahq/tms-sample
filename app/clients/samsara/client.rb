@@ -63,8 +63,24 @@ module Samsara
     end
 
     def vehicles
-      result = get("/fleet/vehicles")
+      assets(type: "vehicle")
+    end
+
+    def trailers
+      assets(type: "trailer")
+    end
+
+    def unpowered_assets
+      assets(type: "unpowered")
+    end
+
+    def assets(type:)
+      result = get("/assets", query: { type: type })
       result.parsed_body["data"]
+    end
+
+    def create_asset(body: {})
+      post("/assets", body: body)
     end
 
     def vehicle_stats(vehicle_ids, types: "gps")
@@ -98,6 +114,19 @@ module Samsara
         startTime: start_time.iso8601,
         endTime: end_time.iso8601,
         limit: limit
+      })
+      result.parsed_body["data"]
+    end
+
+    def messages
+      result = get("/v1/fleet/messages")
+      result.parsed_body["data"]
+    end
+
+    def send_message(driver_ids, message)
+      result = post("/v1/fleet/messages", body: {
+        driverIds: driver_ids,
+        text: message
       })
       result.parsed_body["data"]
     end

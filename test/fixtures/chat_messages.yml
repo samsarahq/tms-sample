@@ -1,0 +1,42 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: chat_messages
+#
+#  id          :integer          not null, primary key
+#  body        :string           default(""), not null
+#  read        :boolean          default(FALSE), not null
+#  sender_name :string
+#  sender_type :string
+#  sent_at     :datetime
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  driver_id   :integer          not null
+#  user_id     :integer          not null
+#
+# Indexes
+#
+#  index_chat_messages_on_driver_id  (driver_id)
+#  index_chat_messages_on_user_id    (user_id)
+#
+# Foreign Keys
+#
+#  driver_id  (driver_id => drivers.id)
+#  user_id    (user_id => users.id)
+#
+one:
+  driver: one
+  body: MyString
+  sender_name: MyString
+  sender_type: MyString
+  read: false
+  sent_at: 2025-01-30 13:25:32
+
+two:
+  driver: two
+  body: MyString
+  sender_name: MyString
+  sender_type: MyString
+  read: false
+  sent_at: 2025-01-30 13:25:32

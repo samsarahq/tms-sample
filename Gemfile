@@ -71,3 +71,5 @@ gem "faker", "~> 3.5"
 gem "net-http"
 
 gem "phony_rails", "~> 0.15.0"
+
+gem "karafka", "~> 2.4"

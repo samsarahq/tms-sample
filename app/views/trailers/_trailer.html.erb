@@ -1,0 +1,27 @@
+<div id="<%= dom_id trailer %>">
+  <h2 class="text-2xl font-bold mb-4">
+    <%= trailer.name %>
+  </h2>
+
+  <div class="flex gap-4 mb-6">
+    <p>
+      <%= trailer.year %>
+      <%= trailer.make %>
+      <%= trailer.model %>
+    </p>
+  </div>
+
+  <div class="text-gray-500 text-sm">
+    <p class="my-2">
+      <%= trailer.vin %>, <%= trailer.license_plate %>
+    </p>
+
+    <p class="my-2">
+      <%= trailer.samsara_id %>
+    </p>
+
+    <p class="text-xs text-gray-400">
+      Updated <%= time_ago_in_words(trailer.updated_at) %> ago
+    </p>
+  </div>
+</div>

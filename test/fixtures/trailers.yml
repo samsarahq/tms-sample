@@ -1,0 +1,44 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: trailers
+#
+#  id            :integer          not null, primary key
+#  license_plate :string
+#  make          :string
+#  model         :string
+#  name          :string
+#  notes         :text
+#  vin           :string
+#  year          :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  samsara_id    :string
+#  user_id       :integer          not null
+#
+# Indexes
+#
+#  index_trailers_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id)
+#
+one:
+  name: MyString
+  make: MyString
+  model: MyString
+  notes: MyText
+  vin: MyString
+  year: MyString
+  license_plate: MyString
+
+two:
+  name: MyString
+  make: MyString
+  model: MyString
+  notes: MyText
+  vin: MyString
+  year: MyString
+  license_plate: MyString

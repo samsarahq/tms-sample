@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :chat_messages
   resource :dispatch
   resources :drivers, concerns: :fetchable
   resources :locations, concerns: :fetchable
@@ -19,10 +20,8 @@ Rails.application.routes.draw do
     resources :stops
     resources :order_stops, only: [:create]
   end
+  resources :trailers, concerns: :fetchable
   resources :vehicles, concerns: :fetchable
-
-  resources :webhooks, only: [:create]
-
 
   # OAuth connection to Samsara
   get "/auth/samsara", to: "auths#samsara"

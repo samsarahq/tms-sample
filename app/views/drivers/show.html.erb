@@ -1,67 +1,114 @@
 <% content_for :title, "Showing driver" %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="w-full md:flex md:gap-8">
+  <!-- Left Column - Driver Details -->
+  <div class="md:w-1/2">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <% end %>
 
-  <h1 class="font-bold text-4xl">Driver #<%= @driver.id %></h1>
+    <h1 class="font-bold text-4xl">Driver #<%= @driver.id %></h1>
 
-  <%= render @driver %>
+    <%= render @driver %>
 
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 my-8">
-    <!-- Break Timer -->
-    <div class="flex flex-col items-center">
-      <div class="w-24 h-24 rounded-full border-4 border-blue-500 flex items-center justify-center">
-        <div class="text-center">
-          <div class="text-xl font-bold">
-            <%= ((@driver.clocks.time_until_break_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
+    <div class="grid grid-cols-2 gap-6 my-8">
+      <!-- Break Timer -->
+      <div class="flex flex-col items-center">
+        <div class="w-24 h-24 rounded-full border-4 border-blue-500 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-xl font-bold">
+              <%= ((@driver.clocks.time_until_break_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            </div>
+            <div class="text-xs text-gray-500">Until Break</div>
           </div>
-          <div class="text-xs text-gray-500">Until Break</div>
+        </div>
+      </div>
+
+      <!-- Drive Timer -->
+      <div class="flex flex-col items-center">
+        <div class="w-24 h-24 rounded-full border-4 border-green-500 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-xl font-bold">
+              <%= ((@driver.clocks.drive_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            </div>
+            <div class="text-xs text-gray-500">Drive Time</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shift Timer -->
+      <div class="flex flex-col items-center">
+        <div class="w-24 h-24 rounded-full border-4 border-yellow-500 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-xl font-bold">
+              <%= ((@driver.clocks.shift_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            </div>
+            <div class="text-xs text-gray-500">Shift Time</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cycle Timer -->
+      <div class="flex flex-col items-center">
+        <div class="w-24 h-24 rounded-full border-4 border-purple-500 flex items-center justify-center">
+          <div class="text-center">
+            <div class="text-xl font-bold">
+              <%= ((@driver.clocks.cycle_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
+            </div>
+            <div class="text-xs text-gray-500">Cycle Time</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Drive Timer -->
-    <div class="flex flex-col items-center">
-      <div class="w-24 h-24 rounded-full border-4 border-green-500 flex items-center justify-center">
-        <div class="text-center">
-          <div class="text-xl font-bold">
-            <%= ((@driver.clocks.drive_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
-          </div>
-          <div class="text-xs text-gray-500">Drive Time</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Shift Timer -->
-    <div class="flex flex-col items-center">
-      <div class="w-24 h-24 rounded-full border-4 border-yellow-500 flex items-center justify-center">
-        <div class="text-center">
-          <div class="text-xl font-bold">
-            <%= ((@driver.clocks.shift_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
-          </div>
-          <div class="text-xs text-gray-500">Shift Time</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Cycle Timer -->
-    <div class="flex flex-col items-center">
-      <div class="w-24 h-24 rounded-full border-4 border-purple-500 flex items-center justify-center">
-        <div class="text-center">
-          <div class="text-xl font-bold">
-            <%= ((@driver.clocks.cycle_time_left_ms || 0) / (1000 * 60 * 60.0)).round(1) %>h
-          </div>
-          <div class="text-xs text-gray-500">Cycle Time</div>
-        </div>
-      </div>
+    <div class="flex gap-2 mt-4">
+      <%= link_to "Edit this driver", edit_driver_path(@driver), class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+      <%= link_to "Back to drivers", drivers_path, class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+      <%= button_to "Deactivate this driver", @driver, method: :delete, class: "rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium" %>
     </div>
   </div>
 
-  <%= link_to "Edit this driver", edit_driver_path(@driver), class: "mt-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to drivers", drivers_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <div class="inline-block ml-2">
-    <%= button_to "Deactivate this driver", @driver, method: :delete, class: "mt-2 rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium" %>
+  <!-- Right Column - Messages -->
+  <div class="md:w-1/2 mt-8 md:mt-0">
+    <div class="border rounded-lg p-4 h-full">
+      <h2 class="text-xl font-bold mb-4">Messages</h2>
+
+      <div id="chat-messages" class="h-96 overflow-y-auto mb-4" data-controller="scroll" data-action="load->scroll#scrollToBottom">
+        <% @driver.chat_messages.order(:created_at).each do |message| %>
+          <div class="mb-6 <%= message.sender_type == 'dispatch' ? 'text-right' : 'text-left' %>">
+            <div class="flex <%= message.sender_type == 'dispatch' ? 'justify-end' : 'justify-start' %> items-start gap-2">
+              <% if message.sender_type != 'dispatch' %>
+                <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm">
+                  <%= message.sender_name&.first&.upcase %>
+                </div>
+              <% end %>
+
+              <div class="<%= message.sender_type == 'dispatch' ? 'bg-blue-500 text-white' : 'bg-gray-100' %> rounded-lg px-4 py-2 max-w-[80%]">
+                <%= message.body %>
+              </div>
+
+              <% if message.sender_type == 'dispatch' %>
+                <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-sm">
+                  <%= message.sender_name&.first&.upcase %>
+                </div>
+              <% end %>
+            </div>
+            <div class="text-xs text-gray-500 mt-1 <%= message.sender_type == 'dispatch' ? 'text-right mr-10' : 'text-left ml-10' %>">
+              <%= message.sender_name %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <%= form_with(url: chat_messages_path, local: false, class: "flex gap-2") do |f| %>
+        <%= f.hidden_field :driver_ids, value: [@driver.samsara_id] %>
+        <%= f.text_area :body,
+            class: "flex-grow rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50",
+            placeholder: "Type your message...",
+            rows: 2 %>
+        <%= f.submit "Send",
+            class: "px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+      <% end %>
+    </div>
   </div>
 </div>

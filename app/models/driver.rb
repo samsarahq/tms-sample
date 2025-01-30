@@ -27,6 +27,7 @@ class Driver < ApplicationRecord
 
   validates :name, :username, :password, presence: true
   has_one :hours_of_service_clock, dependent: :destroy
+  has_many :chat_messages, dependent: :destroy
 
   phony_normalize :phone_number, default_country_code: 'US'
 

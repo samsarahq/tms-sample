@@ -1,20 +1,18 @@
 # == Schema Information
 #
-# Table name: events
+# Table name: kafka_messages
 #
 #  id                :integer          not null, primary key
-#  event_type        :string
+#  key               :string
 #  payload           :json
-#  processing_errors :text
-#  source            :string
-#  status            :string
+#  processing_errors :text             default("")
+#  topic             :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  event_id          :string
 #
 require "test_helper"
 
-class EventTest < ActiveSupport::TestCase
+class KafkaMessageTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
