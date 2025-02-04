@@ -13,6 +13,11 @@ services:
     buildCommand: "./bin/render-build.sh"
     startCommand: "./bin/render-start.sh"
     initialDeployHook: "./bin/render-seed.sh"
+    disk:
+      name: sqlite3-data
+      mountPath: /usr/storage
+      sizeGB: 1
+
     # envVars:
     #   - key: RAILS_MASTER_KEY
     #     sync: false
