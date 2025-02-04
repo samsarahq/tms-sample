@@ -5,7 +5,7 @@ previewsEnabled: false
 # Replace repo url with the repository url for your Jumpstart Pro application
 services:
   - type: web
-    plan: free
+    plan: starter
     repo: https://github.com/cjavdev/mini-tms
     name: cjavdev
     env: ruby
