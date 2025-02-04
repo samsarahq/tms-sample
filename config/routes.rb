@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   end
   resources :trailers, concerns: :fetchable
   resources :vehicles, concerns: :fetchable
+  resources :webhooks, only: [:create]
 
   # OAuth connection to Samsara
   get "/auth/samsara", to: "auths#samsara"

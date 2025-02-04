@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_04_185459) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_04_195802) do
   create_table "chat_messages", force: :cascade do |t|
     t.integer "driver_id", null: false
     t.integer "user_id", null: false
@@ -225,6 +225,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_185459) do
     t.datetime "updated_at", null: false
     t.index ["samsara_id"], name: "index_vehicles_on_samsara_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
+  end
+
+  create_table "webhook_events", force: :cascade do |t|
+    t.string "source", null: false
+    t.json "payload", default: {}, null: false
+    t.integer "status", default: 0, null: false
+    t.text "processing_errors"
+    t.string "event_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "chat_messages", "drivers"
