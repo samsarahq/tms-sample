@@ -15,7 +15,7 @@ services:
     initialDeployHook: "./bin/render-seed.sh"
     disk:
       name: sqlite3-data
-      mountPath: /usr/storage
+      mountPath: /var/data
       sizeGB: 1
 
     # envVars:
