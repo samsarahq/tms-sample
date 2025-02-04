@@ -1,0 +1,52 @@
+<%= form_with(model: form_submission, class: "contents") do |form| %>
+  <% if form_submission.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(form_submission.errors.count, "error") %> prohibited this form_submission from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% form_submission.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": form_submission.errors[:user_id].none?, "border-red-400 focus:outline-red-600": form_submission.errors[:user_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :form_template_id %>
+    <%= form.text_field :form_template_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": form_submission.errors[:form_template_id].none?, "border-red-400 focus:outline-red-600": form_submission.errors[:form_template_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :samsara_id %>
+    <%= form.text_field :samsara_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": form_submission.errors[:samsara_id].none?, "border-red-400 focus:outline-red-600": form_submission.errors[:samsara_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :submitted_by_id %>
+    <%= form.text_field :submitted_by_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": form_submission.errors[:submitted_by_id].none?, "border-red-400 focus:outline-red-600": form_submission.errors[:submitted_by_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :status %>
+    <%= form.number_field :status, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": form_submission.errors[:status].none?, "border-red-400 focus:outline-red-600": form_submission.errors[:status].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :assigned_to_id %>
+    <%= form.text_field :assigned_to_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": form_submission.errors[:assigned_to_id].none?, "border-red-400 focus:outline-red-600": form_submission.errors[:assigned_to_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :stop_id %>
+    <%= form.text_field :stop_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": form_submission.errors[:stop_id].none?, "border-red-400 focus:outline-red-600": form_submission.errors[:stop_id].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

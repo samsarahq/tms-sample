@@ -1,0 +1,10 @@
+<% content_for :title, "Editing form submission" %>
+
+<div class="md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl">Editing form submission</h1>
+
+  <%= render "form", form_submission: @form_submission %>
+
+  <%= link_to "Show this form submission", @form_submission, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to form submissions", form_submissions_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+</div>

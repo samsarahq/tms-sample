@@ -34,8 +34,10 @@ class Driver < ApplicationRecord
   enum :status, { active: 0, deactivated: 1 }
 
   def clocks
+
     if hours_of_service_clock.nil?
       clock = HoursOfServiceClock.new(driver: self)
+      return clock if samsara_id.blank?
     else
       clock = hours_of_service_clock
     end

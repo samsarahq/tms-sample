@@ -4,6 +4,7 @@ class OrderStopsController < ApplicationController
     @order = Order.find(params[:order_id])
 
     stops_changed = false
+    delivery_stop = nil
 
     ActiveRecord::Base.transaction do
       # Check if pickup location already exists as a stop in the route
@@ -25,14 +26,18 @@ class OrderStopsController < ApplicationController
       if delivery_stop
         OrderStop.create!(order: @order, stop: delivery_stop, stop_type: :delivery)
       else
-        new_delivery_stop = @route.stops.create!(
+        delivery_stop = @route.stops.create!(
           location: @order.to_location,
           scheduled_arrival_time: @route.scheduled_start_time,
           scheduled_departure_time: @route.scheduled_start_time + 5.minutes
         )
-        OrderStop.create!(order: @order, stop: new_delivery_stop, stop_type: :delivery)
+        OrderStop.create!(order: @order, stop: delivery_stop, stop_type: :delivery)
         stops_changed = true
       end
+    end
+
+    if delivery_stop
+      Samsara::FormSubmissionService.new(current_user).create_proof_of_delivery(@order, delivery_stop)
     end
 
     if stops_changed

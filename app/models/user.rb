@@ -22,6 +22,8 @@ class User < ApplicationRecord
   has_many :routes, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :trailers, dependent: :destroy
+  has_many :form_templates, dependent: :destroy
+  has_many :form_submissions, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 

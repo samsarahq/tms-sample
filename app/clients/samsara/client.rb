@@ -32,6 +32,16 @@ module Samsara
       credentials["access_token"]
     end
 
+    def create_form_submission(body: {})
+      result = post("/form-submissions", body: body)
+      result.parsed_body["data"]
+    end
+
+    def fetch_form_submission(form_submission_id)
+      result = get("/form-submissions?ids=#{form_submission_id}")
+      result.parsed_body["data"][0]
+    end
+
     def addresses
       result = get("/addresses")
       result.parsed_body["data"]

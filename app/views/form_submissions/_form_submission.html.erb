@@ -1,0 +1,29 @@
+<div id="<%= dom_id form_submission %>" class="space-y-4">
+  <div class="flex items-center gap-2">
+    <h3 class="text-lg font-medium"><%= form_submission.form_template.title %></h3>
+  </div>
+
+  <div class="flex items-center gap-2 text-sm text-gray-600">
+    <span><%= link_to form_submission.samsara_id, "https://cloud.samsara.com/o/4007512/fleet/reports/forms/submissions/#{form_submission.samsara_id}", target: "_blank" %></span>
+  </div>
+
+  <div class="flex items-center gap-2 text-sm text-gray-600">
+    <label>Submitted by:</label>
+    <%= link_to form_submission.submitted_by.name, form_submission.submitted_by, class: "text-blue-600 hover:text-blue-800" %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+      <%= form_submission.status %>
+    </span>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <label>Assigned to:</label>
+    <%= link_to form_submission.assigned_to.name, form_submission.assigned_to, class: "text-blue-600 hover:text-blue-800" %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span><%= form_submission.stop.location.name %></span>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<% content_for :title, "Showing form submission" %>
+
+<div class="md:w-2/3 w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <h1 class="font-bold text-4xl"><%= @form_submission.form_template.title %></h1>
+
+  <%= render @form_submission %>
+
+  <pre>
+    <%= JSON.pretty_generate(@form_submission.submission_json) %>
+  </pre>
+
+  <%= link_to "Edit this form submission", edit_form_submission_path(@form_submission), class: "mt-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <%= link_to "Back to form submissions", form_submissions_path, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="inline-block ml-2">
+    <%= button_to "Destroy this form submission", @form_submission, method: :delete, class: "mt-2 rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium" %>
+  </div>
+</div>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :chat_messages
   resource :dispatch
   resources :drivers, concerns: :fetchable
+  resources :form_submissions
   resources :locations, concerns: :fetchable
   resources :orders
   resources :routes, concerns: :fetchable do

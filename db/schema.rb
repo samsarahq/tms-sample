@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_30_195202) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_04_185459) do
   create_table "chat_messages", force: :cascade do |t|
     t.integer "driver_id", null: false
     t.integer "user_id", null: false
@@ -47,6 +47,36 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_195202) do
     t.string "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "form_submissions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "form_template_id"
+    t.string "samsara_id"
+    t.integer "submitted_by_id"
+    t.integer "status", default: 0
+    t.integer "assigned_to_id"
+    t.integer "stop_id"
+    t.json "submission_json", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assigned_to_id"], name: "index_form_submissions_on_assigned_to_id"
+    t.index ["form_template_id"], name: "index_form_submissions_on_form_template_id"
+    t.index ["stop_id"], name: "index_form_submissions_on_stop_id"
+    t.index ["submitted_by_id"], name: "index_form_submissions_on_submitted_by_id"
+    t.index ["user_id"], name: "index_form_submissions_on_user_id"
+  end
+
+  create_table "form_templates", force: :cascade do |t|
+    t.string "samsara_id"
+    t.string "samsara_revision_id"
+    t.json "template_json", default: {}
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.string "slug"
+    t.index ["user_id"], name: "index_form_templates_on_user_id"
   end
 
   create_table "hours_of_service_clocks", force: :cascade do |t|
@@ -200,6 +230,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_195202) do
   add_foreign_key "chat_messages", "drivers"
   add_foreign_key "chat_messages", "users"
   add_foreign_key "drivers", "users"
+  add_foreign_key "form_submissions", "drivers", column: "assigned_to_id"
+  add_foreign_key "form_submissions", "drivers", column: "submitted_by_id"
+  add_foreign_key "form_submissions", "form_templates"
+  add_foreign_key "form_submissions", "stops"
+  add_foreign_key "form_submissions", "users"
+  add_foreign_key "form_templates", "users"
   add_foreign_key "hours_of_service_clocks", "drivers"
   add_foreign_key "locations", "users"
   add_foreign_key "order_stops", "orders"

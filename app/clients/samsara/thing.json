@@ -1,0 +1,59 @@
+{
+  "formTemplate": {
+    "id": "9e118726-41e2-5ba9-8c1a-eb78e8a391ac",
+    "revisionId": "bb27d73b-9188-490d-9bcf-1918c0bf6933"
+  },
+  "status": "toDo",
+  "assignedTo": {
+    "id": null,
+    "type": "driver"
+  },
+  "dueAtTime": "2025-02-04T00:00:00.000Z",
+  "fields": [
+    {
+      "id": "4f8280be-4ad6-480e-8dc8-b73a15275dfd",
+      "type": "text",
+      "textValue": {
+        "value": "test"
+      }
+    },
+    {
+      "id": "d873cdf8-59d9-405f-aa95-44ca56ef6f0e",
+      "type": "table",
+      "tableValue": {
+        "rows": [
+          {
+            "id": "d873cdf8-59d9-405f-aa95-44ca56ef6f0e",
+            "cells": [
+              {
+                "id": "75996673-3621-4f7a-93d0-edb5a3b235cf",
+                "type": "text",
+                "textValue": {
+                  "value": 5
+                }
+              },
+              {
+                "id": "4c6090b8-119c-46b9-8a2d-971c84247668",
+                "type": "multiple_choice",
+                "multipleChoiceValue": {
+                  "valueId": "732d6ff1-b33e-410b-a3d9-84ddbeae0916"
+                },
+                "options": [
+                  {
+                    "label": "Yes",
+                    "uuid": "732d6ff1-b33e-410b-a3d9-84ddbeae0916"
+                  },
+                  {
+                    "label": "No",
+                    "uuid": "70f8c4f8-7b78-4301-b3a6-f5bd92a7e272"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "title": "Proof Of Delivery"
+}
