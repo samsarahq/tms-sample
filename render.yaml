@@ -1,0 +1,61 @@
+# set up preview builds
+previewsEnabled: false
+
+# Example Render configuration. You will need to adjust this for the different services you run.
+# Replace repo url with the repository url for your Jumpstart Pro application
+services:
+  - type: web
+    plan: free
+    repo: https://github.com/cjavdev/mini-tms
+    name: cjavdev
+    env: ruby
+    region: ohio # the region must be consistent across all services for the internal keys to be read
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "./bin/render-start.sh"
+    initialDeployHook: "./bin/render-seed.sh"
+    # envVars:
+    #   - key: RAILS_MASTER_KEY
+    #     sync: false
+    #   - key: DATABASE_URL
+    #     fromDatabase:
+    #       name: postgres
+    #       property: connectionString
+    #   # - key: REDIS_URL
+    #   #   fromService:
+    #   #     type: redis
+    #   #     name: redis
+    #   #     property: connectionString
+    #   - fromGroup: default-env
+
+  # - type: redis
+  #   name: redis
+  #   region: ohio # the region must be consistent across all services for the internal keys to be read
+  #   ipAllowList: [] # only allow internal connections
+  #   plan: free # optional (defaults to starter)
+  #   maxmemoryPolicy: noeviction # optional (defaults to allkeys-lru)
+
+  # - type: worker
+  #   name: sidekiq-worker
+  #   env: ruby
+  #   plan: starter # no free option for bg workers
+  #   region: ohio # the region must be consistent across all services for the internal keys to be read
+  #   buildCommand: './bin/render-build-sidekiq.sh'
+  #   startCommand: './bin/render-start-sidekiq.sh'
+  #   envVars:
+  #     - key: DATABASE_URL
+  #       fromDatabase:
+  #         name: postgres
+  #         property: connectionString
+  #     - key: REDIS_URL
+  #       fromService:
+  #         name: redis
+  #         type: redis
+  #         property: connectionString
+  #     - key: RAILS_MASTER_KEY
+  #       sync: false
+  #     - fromGroup: default-env
+# databases:
+#   - name: postgres
+#     plan: starter
+#     region: ohio # the region must be consistent across all services for the internal keys to be read
+#     ipAllowList: [] # only allow internal connections
