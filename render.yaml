@@ -47,6 +47,6 @@ services:
 
 databases:
   - name: mini-tms-postgres
-    plan: basic-256mb
+    plan: free
     region: ohio # the region must be consistent across all services for the internal keys to be read
     ipAllowList: [] # only allow internal connections
