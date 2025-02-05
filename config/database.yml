@@ -20,21 +20,28 @@ test:
   <<: *default
   database: storage/test.sqlite3
 
-# Store production database in the storage/ directory, which by default
-# is mounted as a persistent Docker volume in config/deploy.yml.
+# Use PostgreSQL in production with Render
 production:
   primary:
     <<: *default
-    database: /var/data/production.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   cache:
     <<: *default
-    database: /var/data/production_cache.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    database: production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    database: /var/data/production_queue.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    database: production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
-    database: /var/data/production_cable.sqlite3
+    adapter: postgresql
+    url: <%= ENV['DATABASE_URL'] %>
+    database: production_cable
     migrations_paths: db/cable_migrate

@@ -3,7 +3,7 @@
 # exit on error
 set -o errexit
 
-echo "Setting up sidekiq in production mode"
+echo "Setting up karafka"
 export RAILS_ENV=production
 export RACK_ENV=production
-bundle exec sidekiq -e production
+bundle exec karafka server
