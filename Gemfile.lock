@@ -213,6 +213,7 @@ GEM
     parser (3.3.7.0)
       ast (~> 2.4.1)
       racc
+    pg (1.5.9)
     phony (2.21.1)
     phony_rails (0.15.0)
       activesupport (>= 3.0)
@@ -414,6 +415,7 @@ DEPENDENCIES
   karafka (~> 2.4)
   net-http
   net-smtp (= 0.5.0)
+  pg (~> 1.5)
   phony_rails (~> 0.15.0)
   propshaft
   puma (>= 5.0)
