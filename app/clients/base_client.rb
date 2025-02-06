@@ -195,7 +195,7 @@ class BaseClient
 
     uri.query = Rack::Utils.build_query(query_params) if query_params.present?
 
-    Rails.logger.debug("#{klass.name.split("::").last.upcase}: #{uri}")
+    Rails.logger.info { "#{klass.name.split("::").last.upcase}: #{uri}" }
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true if uri.instance_of? URI::HTTPS
@@ -218,16 +218,16 @@ class BaseClient
       request.set_form(form_data, "multipart/form-data")
     end
 
-    Rails.logger.debug("Request: #{klass.name.split("::").last.upcase}: #{path}")
-    Rails.logger.debug("Headers: #{headers}")
-    Rails.logger.debug("Body: #{request.body}")
-    Rails.logger.debug("Query: #{query}")
-    Rails.logger.debug("Form Data: #{form_data}")
+    Rails.logger.info { "Request: #{klass.name.split("::").last.upcase}: #{path}" }
+    Rails.logger.info { "Headers: #{headers}" }
+    Rails.logger.info { "Body: #{request.body}" }
+    Rails.logger.info { "Query: #{query}" }
+    Rails.logger.info { "Form Data: #{form_data}" }
 
 
     response = self.class::Response.new(http.request(request))
 
-    Rails.logger.debug("response: #{response.body}")
+    Rails.logger.info { "response: #{response.body}" }
 
     handle_response response
   end

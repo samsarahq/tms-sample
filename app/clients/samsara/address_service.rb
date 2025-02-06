@@ -35,6 +35,10 @@ module Samsara
 
     def fetch_addresses
       @client.addresses.each do |address|
+        next if address["id"].blank?
+        next if address["name"].blank?
+        next if address["formattedAddress"].blank?
+
         addy = @user.locations.find_or_create_by!(samsara_id: address["id"])
         addy.update(
           name: address["name"],
