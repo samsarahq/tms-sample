@@ -2,7 +2,7 @@
 #
 # Table name: form_submissions
 #
-#  id               :integer          not null, primary key
+#  id               :bigint           not null, primary key
 #  status           :integer          default("toDo")
 #  submission_json  :json
 #  created_at       :datetime         not null
@@ -24,11 +24,11 @@
 #
 # Foreign Keys
 #
-#  assigned_to_id    (assigned_to_id => drivers.id)
-#  form_template_id  (form_template_id => form_templates.id)
-#  stop_id           (stop_id => stops.id)
-#  submitted_by_id   (submitted_by_id => drivers.id)
-#  user_id           (user_id => users.id)
+#  fk_rails_...  (assigned_to_id => drivers.id)
+#  fk_rails_...  (form_template_id => form_templates.id)
+#  fk_rails_...  (stop_id => stops.id)
+#  fk_rails_...  (submitted_by_id => drivers.id)
+#  fk_rails_...  (user_id => users.id)
 #
 class FormSubmission < ApplicationRecord
   belongs_to :user

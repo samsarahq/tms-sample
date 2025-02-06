@@ -2,7 +2,7 @@
 #
 # Table name: trailers
 #
-#  id            :integer          not null, primary key
+#  id            :bigint           not null, primary key
 #  license_plate :string
 #  make          :string
 #  model         :string
@@ -21,7 +21,7 @@
 #
 # Foreign Keys
 #
-#  user_id  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 require "test_helper"
 

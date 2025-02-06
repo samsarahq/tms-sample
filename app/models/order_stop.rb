@@ -2,7 +2,7 @@
 #
 # Table name: order_stops
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  stop_type  :integer          default("pickup")
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -16,8 +16,8 @@
 #
 # Foreign Keys
 #
-#  order_id  (order_id => orders.id)
-#  stop_id   (stop_id => stops.id)
+#  fk_rails_...  (order_id => orders.id)
+#  fk_rails_...  (stop_id => stops.id)
 #
 class OrderStop < ApplicationRecord
   belongs_to :order

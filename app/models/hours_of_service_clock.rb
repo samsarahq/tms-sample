@@ -2,7 +2,7 @@
 #
 # Table name: hours_of_service_clocks
 #
-#  id                  :integer          not null, primary key
+#  id                  :bigint           not null, primary key
 #  cycle_time_left_ms  :integer
 #  cycle_violation_ms  :integer
 #  drive_time_left_ms  :integer
@@ -20,7 +20,7 @@
 #
 # Foreign Keys
 #
-#  driver_id  (driver_id => drivers.id)
+#  fk_rails_...  (driver_id => drivers.id)
 #
 class HoursOfServiceClock < ApplicationRecord
   belongs_to :driver

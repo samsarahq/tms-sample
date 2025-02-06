@@ -2,7 +2,7 @@
 #
 # Table name: kafka_messages
 #
-#  id                :integer          not null, primary key
+#  id                :bigint           not null, primary key
 #  key               :string
 #  payload           :json
 #  processing_errors :text             default("")

@@ -2,7 +2,7 @@
 #
 # Table name: vehicles
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  latitude   :float
 #  longitude  :float
 #  make       :string
@@ -23,7 +23,7 @@
 #
 # Foreign Keys
 #
-#  user_id  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

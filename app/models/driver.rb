@@ -2,7 +2,7 @@
 #
 # Table name: drivers
 #
-#  id           :integer          not null, primary key
+#  id           :bigint           not null, primary key
 #  name         :string
 #  password     :string
 #  phone_number :string
@@ -19,7 +19,7 @@
 #
 # Foreign Keys
 #
-#  user_id  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 
 class Driver < ApplicationRecord

@@ -2,7 +2,7 @@
 #
 # Table name: chat_messages
 #
-#  id          :integer          not null, primary key
+#  id          :bigint           not null, primary key
 #  body        :string           default(""), not null
 #  read        :boolean          default(FALSE), not null
 #  sender_name :string
@@ -20,8 +20,8 @@
 #
 # Foreign Keys
 #
-#  driver_id  (driver_id => drivers.id)
-#  user_id    (user_id => users.id)
+#  fk_rails_...  (driver_id => drivers.id)
+#  fk_rails_...  (user_id => users.id)
 #
 class ChatMessage < ApplicationRecord
   belongs_to :driver

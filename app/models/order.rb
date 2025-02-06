@@ -2,7 +2,7 @@
 #
 # Table name: orders
 #
-#  id                    :integer          not null, primary key
+#  id                    :bigint           not null, primary key
 #  description           :text
 #  requested_delivery_at :datetime
 #  requested_pickup_at   :datetime
@@ -21,9 +21,9 @@
 #
 # Foreign Keys
 #
-#  from_location_id  (from_location_id => locations.id)
-#  to_location_id    (to_location_id => locations.id)
-#  user_id           (user_id => users.id)
+#  fk_rails_...  (from_location_id => locations.id)
+#  fk_rails_...  (to_location_id => locations.id)
+#  fk_rails_...  (user_id => users.id)
 #
 class Order < ApplicationRecord
   belongs_to :from_location, class_name: "Location", foreign_key: :from_location_id

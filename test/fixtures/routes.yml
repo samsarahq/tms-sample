@@ -4,7 +4,7 @@
 #
 # Table name: routes
 #
-#  id                   :integer          not null, primary key
+#  id                   :bigint           not null, primary key
 #  actual_end_time      :datetime
 #  actual_start_time    :datetime
 #  name                 :string
@@ -26,9 +26,9 @@
 #
 # Foreign Keys
 #
-#  driver_id   (driver_id => drivers.id)
-#  user_id     (user_id => users.id)
-#  vehicle_id  (vehicle_id => vehicles.id)
+#  fk_rails_...  (driver_id => drivers.id)
+#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (vehicle_id => vehicles.id)
 #
 one:
   name: MyString

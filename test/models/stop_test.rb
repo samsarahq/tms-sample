@@ -2,7 +2,7 @@
 #
 # Table name: stops
 #
-#  id                       :integer          not null, primary key
+#  id                       :bigint           not null, primary key
 #  actual_arrival_time      :datetime
 #  actual_departure_time    :datetime
 #  en_route_time            :datetime
@@ -24,8 +24,8 @@
 #
 # Foreign Keys
 #
-#  location_id  (location_id => locations.id)
-#  route_id     (route_id => routes.id)
+#  fk_rails_...  (location_id => locations.id)
+#  fk_rails_...  (route_id => routes.id)
 #
 require "test_helper"
 
