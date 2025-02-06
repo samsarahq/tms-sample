@@ -73,3 +73,5 @@ gem "net-http"
 gem "phony_rails", "~> 0.15.0"
 
 gem "karafka", "~> 2.4"
+
+gem 'net-smtp', '0.5.0'
