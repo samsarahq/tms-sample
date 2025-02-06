@@ -39,7 +39,7 @@ module Samsara
         next if address["name"].blank?
         next if address["formattedAddress"].blank?
 
-        addy = @user.locations.find_or_initialize_by!(samsara_id: address["id"])
+        addy = @user.locations.find_or_initialize_by(samsara_id: address["id"])
         addy.update(
           name: address["name"],
           formatted_address: address["formattedAddress"],
