@@ -37,7 +37,7 @@ class WebhooksController < ApplicationController
       )
       event.update(status: :processed)
     when "AddressUpdated"
-      address = Address.find_by(samsara_id: event.payload["data"]["address"]["id"])
+      address = Location.find_by(samsara_id: event.payload["data"]["address"]["id"])
       address.update!(
         name: event.payload["data"]["address"]["name"],
         formatted_address: event.payload["data"]["address"]["formattedAddress"],
@@ -47,7 +47,7 @@ class WebhooksController < ApplicationController
       )
       event.update(status: :processed)
     when "AddressCreated"
-      address = Address.find_or_initialize_by(samsara_id: event.payload["data"]["address"]["id"])
+      address = Location.find_or_initialize_by(samsara_id: event.payload["data"]["address"]["id"])
       address.update!(
         name: event.payload["data"]["address"]["name"],
         formatted_address: event.payload["data"]["address"]["formattedAddress"],
