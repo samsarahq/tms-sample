@@ -209,6 +209,7 @@ GEM
     nokogiri (1.18.2-x86_64-linux-musl)
       racc (~> 1.4)
     ostruct (0.6.1)
+    pagy (9.3.3)
     parallel (1.26.3)
     parser (3.3.7.0)
       ast (~> 2.4.1)
@@ -415,6 +416,7 @@ DEPENDENCIES
   karafka (~> 2.4)
   net-http
   net-smtp (= 0.5.0)
+  pagy (~> 9.3)
   pg (~> 1.5)
   phony_rails (~> 0.15.0)
   propshaft

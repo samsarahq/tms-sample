@@ -60,6 +60,14 @@
 
                 <%= link_to "Dispatch", dispatch_path,
                     class: "#{active_link?('/dispatch')} rounded-md px-3 py-2 text-sm font-medium" %>
+
+                <div class="border-l border-gray-700 pl-4 ml-4">
+                  <%= link_to "Webhooks", webhooks_path,
+                      class: "#{active_link?('/webhooks')} rounded-md px-3 py-2 text-sm font-medium font-mono" %>
+
+                  <%= link_to "Kafka", kafka_messages_path,
+                      class: "#{active_link?('/kafka_messages')} rounded-md px-3 py-2 text-sm font-medium font-mono" %>
+                </div>
               </div>
             </div>
           </div>

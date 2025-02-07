@@ -1,0 +1,86 @@
+<% content_for :title, "Kafka Messages" %>
+
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold text-gray-900">Kafka Messages</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        A list of all Kafka messages processed by the application, ordered by most recent first.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Topic</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Key</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Received At</th>
+              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6 lg:pr-8">
+                <span class="sr-only">Expand</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white" data-controller="webhook-expander">
+            <% @kafka_messages.each do |message| %>
+              <tr id="message-<%= message.id %>" class="hover:bg-gray-50">
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8">
+                  <%= message.topic %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= message.key %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= message.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+                </td>
+                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8">
+                  <button type="button"
+                          class="text-indigo-600 hover:text-indigo-900"
+                          data-action="webhook-expander#toggle"
+                          data-webhook-expander-target="button"
+                          data-webhook-id="<%= message.id %>">
+                    Expand
+                    <svg class="inline-block w-4 h-4 ml-1 transform transition-transform duration-200"
+                         data-webhook-expander-target="icon"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24">
+                      <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              <tr class="hidden" data-webhook-expander-target="details" data-webhook-id="<%= message.id %>">
+                <td colspan="4" class="px-6 py-4 bg-gray-50">
+                  <div class="rounded-lg bg-white shadow">
+                    <div class="px-4 py-5 sm:p-6">
+                      <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Payload Details</h3>
+                      <pre class="whitespace-pre-wrap bg-gray-100 p-4 rounded-md overflow-x-auto text-sm"><%= JSON.pretty_generate(message.payload) %></pre>
+
+                      <% if message.processing_errors.present? %>
+                        <div class="mt-4">
+                          <h4 class="text-md font-medium leading-6 text-red-600 mb-2">Processing Errors</h4>
+                          <pre class="whitespace-pre-wrap bg-red-50 p-4 rounded-md text-red-700 text-sm"><%= message.processing_errors %></pre>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <%== pagy_nav(@pagy) %>
+  </div>
+</div>

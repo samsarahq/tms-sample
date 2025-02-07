@@ -1,6 +1,14 @@
 class WebhooksController < ApplicationController
-  skip_before_action :require_authentication
-  skip_before_action :verify_authenticity_token
+  skip_before_action :require_authentication, only: [:create]
+  skip_before_action :verify_authenticity_token, only: [:create]
+  include Pagy::Backend
+
+  def index
+    @pagy, @webhook_events = pagy(
+      WebhookEvent.order(created_at: :desc),
+      items: 20
+    )
+  end
 
   def create
     event = WebhookEvent.create!(

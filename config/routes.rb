@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resource :dispatch
   resources :drivers, concerns: :fetchable
   resources :form_submissions
+  resources :kafka_messages, only: [:index]
   resources :locations, concerns: :fetchable
   resources :orders
   resources :routes, concerns: :fetchable do
@@ -23,7 +24,7 @@ Rails.application.routes.draw do
   end
   resources :trailers, concerns: :fetchable
   resources :vehicles, concerns: :fetchable
-  resources :webhooks, only: [:create]
+  resources :webhooks, only: [:create, :index]
 
   # OAuth connection to Samsara
   get "/auth/samsara", to: "auths#samsara"
