@@ -32,17 +32,23 @@ module Samsara
         end
       }
 
+      samsara_route = nil
       if route.samsara_id.blank?
         samsara_route = @client.create_route(body: route_params)
         route.update!(samsara_id: samsara_route["id"])
-
-        samsara_route["stops"].each_with_index do |samsara_stop, index|
-          stops[index].update!(samsara_id: samsara_stop["id"])
-        end
       else
-        @client.update_route(route.samsara_id, body: route_params)
+        samsara_route = @client.update_route(route.samsara_id, body: route_params)
       end
 
+      # Always update the stops with the new Samsara IDs
+      samsara_route["stops"].each_with_index do |samsara_stop, index|
+        stops[index].update!(
+          samsara_id: samsara_stop["id"],
+          state: samsara_stop["state"],
+          live_sharing_url: samsara_stop["liveSharingUrl"],
+          notes: samsara_stop["notes"],
+        )
+      end
     end
 
     def fetch_routes

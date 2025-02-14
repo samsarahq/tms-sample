@@ -36,15 +36,11 @@
     <%= stop.notes %>
   </p>
   <p class="my-5">
-    <strong class="block font-medium mb-1">Stop type:</strong>
-    <%= stop.stop_type %>
-  </p>
-  <p class="my-5">
     <strong class="block font-medium mb-1">Route:</strong>
-    <%= stop.route_id %>
+    <%= link_to stop.route.name, route_path(stop.route) %>
   </p>
   <p class="my-5">
     <strong class="block font-medium mb-1">Address:</strong>
-    <%= stop.address_id %>
+    <%= link_to stop.location.name, location_path(stop.location) %>
   </p>
 </div>

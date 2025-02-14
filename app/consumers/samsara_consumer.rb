@@ -4,10 +4,38 @@ class SamsaraConsumer < ApplicationConsumer
       message = KafkaMessage.create!(
         topic: message.topic,
         key: message.key,
-        payload: message.payload
+        payload: message.payload,
+        event_type: event_type_for(message.payload)
       )
       handle_message(message)
     end
+  end
+
+  # Fragile, but works
+  def event_type_for(payload)
+    if payload["eventType"]
+      return payload["eventType"]
+    end
+    if payload["clocks"]
+      return "clocks"
+    end
+    if payload["vehicle"]
+      return "vehicle"
+    end
+    if payload["asset"]
+      return "asset"
+    end
+    if payload["driver"]
+      return "driver"
+    end
+    if payload["address"]
+      return "address"
+    end
+  end
+
+  # Consistent, clean, concise
+  def event_type_for(payload)
+    payload["eventType"]
   end
 
   def handle_message(message)

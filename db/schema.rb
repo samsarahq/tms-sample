@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_04_195802) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_13_222231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -103,6 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_04_195802) do
     t.text "processing_errors", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "event_type"
   end
 
   create_table "locations", force: :cascade do |t|

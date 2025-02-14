@@ -10,6 +10,51 @@
     </div>
   </div>
 
+  <div class="mt-4 sm:flex sm:items-center sm:gap-4">
+    <%# Search form %>
+    <div class="flex-1">
+      <%= form_with(url: kafka_messages_path, method: :get, class: "flex gap-4 items-end", data: { turbo_frame: "_top" }) do |f| %>
+        <div class="flex-1">
+          <label for="search" class="block text-sm font-medium text-gray-700">Search in Payload</label>
+          <div class="mt-1">
+            <%= f.text_field :q,
+                value: params[:q],
+                class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm",
+                placeholder: "Search in JSON payload..." %>
+          </div>
+        </div>
+
+        <div>
+          <label for="type" class="block text-sm font-medium text-gray-700">Event Type</label>
+          <div class="mt-1">
+            <%= f.select :type,
+                options_for_select([["All Types", ""]] + @event_types.map { |t| [t.titleize, t] }, params[:type]),
+                {},
+                class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          </div>
+        </div>
+
+        <%= f.submit "Filter", class: "rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+
+        <% if params[:q].present? || params[:type].present? %>
+          <%= link_to "Clear", kafka_messages_path,
+              class: "rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Webhook filter toggle %>
+    <div class="mt-4 sm:mt-0">
+      <% if params[:event_type] == "webhook" %>
+        <%= link_to "Show All Messages", kafka_messages_path(q: params[:q], type: params[:type]),
+            class: "inline-flex items-center justify-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto" %>
+      <% else %>
+        <%= link_to "Show Webhook Events", kafka_messages_path(event_type: "webhook", q: params[:q], type: params[:type]),
+            class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
+      <% end %>
+    </div>
+  </div>
+
   <div class="mt-8 flow-root">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle">

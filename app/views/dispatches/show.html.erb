@@ -172,7 +172,27 @@
                     <% end %>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-900">
-                    <%= route.vehicle&.name || "Unassigned" %>
+                    <% if route.vehicle.nil? %>
+                      <%= form_with(model: route, local: true, class: "inline") do |f| %>
+                        <div class="relative" data-controller="typeahead" data-typeahead-url-value="/vehicles">
+                          <%= f.hidden_field :vehicle_id %>
+                          <%= text_field_tag :vehicle_search, nil,
+                              class: "w-32 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm",
+                              data: {
+                                typeahead_target: "input",
+                                action: "input->typeahead#search"
+                              },
+                              placeholder: "Assign vehicle..." %>
+
+                          <div class="absolute z-10 w-full bg-white shadow-lg rounded-b-md border border-gray-200 mt-1 hidden"
+                               data-typeahead-target="results">
+                          </div>
+                        </div>
+                        <%= f.submit "Assign", class: "ml-2 rounded-md bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700" %>
+                      <% end %>
+                    <% else %>
+                      <%= route.vehicle.name %>
+                    <% end %>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <%= route.scheduled_start_time&.strftime("%B %d, %Y at %I:%M %p") %>

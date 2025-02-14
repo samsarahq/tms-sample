@@ -17,7 +17,7 @@ export default class extends Controller {
     });
 
     // Handle keyboard navigation
-    this.input.addEventListener("keydown", (event) => {
+    this.inputTarget.addEventListener("keydown", (event) => {
       if (!this.resultsTarget.firstElementChild) return;
 
       switch (event.key) {

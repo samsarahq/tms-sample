@@ -41,7 +41,8 @@
                     "<p class='text-sm text-gray-600'>" +
                     "Arrival: <%= stop.scheduled_arrival_time&.strftime("%b %d, %H:%M") %><br>" +
                     "Pickups: <%= stop.order_stops.pickup.count %><br>" +
-                    "Deliveries: <%= stop.order_stops.delivery.count %>" +
+                    "Deliveries: <%= stop.order_stops.delivery.count %><br>" +
+                    "Samsara ID: <%= stop.samsara_id %>" +
                     "</p></div>"
             },
           <% end %>
@@ -137,7 +138,7 @@
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scheduled Arrival</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scheduled Departure</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Samsara ID</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -145,10 +146,12 @@
               <% @route.stops.order(:scheduled_arrival_time).each do |stop| %>
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <%= stop.location&.name %>
-                    <div class="text-xs text-gray-500 mt-1">
-                      <span class="mr-2">Pickups: <%= stop.order_stops.pickup.count %></span>
-                      <span>Deliveries: <%= stop.order_stops.delivery.count %></span>
+                    <div title="Samsara ID: <%= stop.samsara_id %>">
+                      <%= stop.location&.name %>
+                      <div class="text-xs text-gray-500 mt-1">
+                        <span class="mr-2">Pickups: <%= stop.order_stops.pickup.count %></span>
+                        <span>Deliveries: <%= stop.order_stops.delivery.count %></span>
+                      </div>
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -159,11 +162,12 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800">
-                      <%= stop.state&.humanize&.downcase %>
+                      <%= stop.samsara_id || 'Not synced' %>
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <%= link_to "Edit", edit_route_stop_path(@route, stop), class: "text-indigo-600 hover:text-indigo-900" %>
+                    <%= link_to "View", route_stop_path(@route, stop), class: "text-blue-600 hover:text-blue-900" %>
+                    <%= link_to "Edit", edit_route_stop_path(@route, stop), class: "ml-3 text-indigo-600 hover:text-indigo-900" %>
                     <%= link_to "Delete", route_stop_path(@route, stop), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "ml-3 text-red-600 hover:text-red-900" %>
                   </td>
                 </tr>
