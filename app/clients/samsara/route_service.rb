@@ -8,12 +8,11 @@ module Samsara
     def sync_route(route)
       return if route.stops.count < 2
 
-      stops = route.stops.order(:scheduled_arrival_time)
+      stops = route.stops
 
       route_params = {
         name: route.name,
         driverId: route.driver&.samsara_id,
-        vehicleId: route.vehicle&.samsara_id,
         settings: {
           routeCompletionCondition: 'arriveLastStop', # , departLastStop'
           routeStartingCondition: 'departFirstStop', # arriveFirstStop'
@@ -35,10 +34,19 @@ module Samsara
       samsara_route = nil
       if route.samsara_id.blank?
         samsara_route = @client.create_route(body: route_params)
-        route.update!(samsara_id: samsara_route["id"])
+        route.update!(
+          samsara_id: samsara_route["id"]
+        )
       else
         samsara_route = @client.update_route(route.samsara_id, body: route_params)
       end
+
+      route.update!(
+        scheduled_start_time: samsara_route["scheduledRouteStartTime"],
+        scheduled_end_time: samsara_route["scheduledRouteEndTime"],
+        actual_start_time: samsara_route["actualRouteStartTime"],
+        actual_end_time: samsara_route["actualRouteEndTime"],
+      )
 
       # Always update the stops with the new Samsara IDs
       samsara_route["stops"].each_with_index do |samsara_stop, index|

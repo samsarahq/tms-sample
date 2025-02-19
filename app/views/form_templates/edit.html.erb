@@ -1,0 +1,16 @@
+<% content_for :title, "Edit Form Template" %>
+
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold text-gray-900">Edit Form Template</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Update the form template details and structure.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <%= render "form", form_template: @form_template %>
+  </div>
+</div>

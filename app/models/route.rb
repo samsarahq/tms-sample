@@ -33,5 +33,5 @@ class Route < ApplicationRecord
   belongs_to :vehicle, optional: true
   belongs_to :user
 
-  has_many :stops, dependent: :destroy
+  has_many :stops, -> { order(Arel.sql('scheduled_arrival_time IS NULL DESC, scheduled_arrival_time ASC')) }, dependent: :destroy
 end

@@ -1,0 +1,16 @@
+<% content_for :title, "New Form Template" %>
+
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold text-gray-900">New Form Template</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Create a new form template that can be assigned to stops for drivers to complete.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <%= render "form", form_template: @form_template %>
+  </div>
+</div>

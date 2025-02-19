@@ -72,6 +72,23 @@ module Samsara
       result.parsed_body["data"]
     end
 
+    def create_vehicle(body: {})
+      result = post("/assets", body: {
+        type: "vehicle",
+        name: body[:name],
+        make: body[:make],
+        model: body[:model],
+        year: body[:year].to_i,
+        vin: body[:vin],
+        notes: body[:notes],
+        licensePlate: body[:license_plate],
+        externalIds: body[:external_ids]
+      })
+      # Should be this to be consistent, but its not:
+      # result.parsed_body["data"]
+      result.parsed_body
+    end
+
     def vehicles
       assets(type: "vehicle")
     end
@@ -91,6 +108,10 @@ module Samsara
 
     def create_asset(body: {})
       post("/assets", body: body)
+    end
+
+    def update_asset(asset_id, body: {})
+      patch("/assets?id=#{asset_id}", body: body)
     end
 
     def vehicle_stats(vehicle_ids, types: "gps")

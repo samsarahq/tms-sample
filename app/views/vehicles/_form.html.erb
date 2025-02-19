@@ -32,11 +32,6 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :samsara_id %>
-    <%= form.text_field :samsara_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:samsara_id].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:samsara_id].any?}] %>
-  </div>
-
-  <div class="my-5">
     <%= form.label :notes %>
     <%= form.textarea :notes, rows: 4, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:notes].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:notes].any?}] %>
   </div>
@@ -44,21 +39,6 @@
   <div class="my-5">
     <%= form.label :vin %>
     <%= form.text_field :vin, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:vin].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:vin].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :latitude %>
-    <%= form.text_field :latitude, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:latitude].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:latitude].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :longitude %>
-    <%= form.text_field :longitude, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:longitude].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:longitude].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, class: ["block shadow rounded-md border outline-none px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": vehicle.errors[:user_id].none?, "border-red-400 focus:outline-red-600": vehicle.errors[:user_id].any?}] %>
   </div>
 
   <div class="inline">

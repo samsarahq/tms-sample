@@ -28,6 +28,4 @@
 
 class Vehicle < ApplicationRecord
   belongs_to :user
-
-  validates :samsara_id, presence: true
 end

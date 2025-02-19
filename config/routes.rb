@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
 
   resources :chat_messages
+  resources :form_templates
   resource :dispatch
   resources :drivers, concerns: :fetchable
   resources :form_submissions

@@ -12,7 +12,15 @@ class VehiclesController < ApplicationController
 
   # GET /vehicles/new
   def new
-    @vehicle = current_user.vehicles.new
+    make, model = Faker::Vehicle.make_and_model.split(" ")
+    @vehicle = current_user.vehicles.new(
+      make: make,
+      model: model,
+      name: "#{make} #{model}",
+      year: Faker::Vehicle.year,
+      vin: Faker::Vehicle.vin,
+      notes: Faker::Lorem.sentence,
+    )
   end
 
   # GET /vehicles/1/edit
@@ -25,6 +33,7 @@ class VehiclesController < ApplicationController
 
     respond_to do |format|
       if @vehicle.save
+        Samsara::VehicleService.new(current_user).sync_vehicle(@vehicle)
         format.html { redirect_to @vehicle, notice: "Vehicle was successfully created." }
         format.json { render :show, status: :created, location: @vehicle }
       else

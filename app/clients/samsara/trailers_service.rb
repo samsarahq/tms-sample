@@ -7,6 +7,7 @@ module Samsara
 
     def sync_trailer(trailer)
       payload = {
+        id: trailer.samsara_id,
         name: trailer.name,
         make: trailer.make,
         model: trailer.model,
