@@ -20,8 +20,10 @@ module Samsara
       driver = stop.route.driver
 
       payload = template.template_json
-
-      payload["assignedTo"]["id"] = driver.samsara_id
+      payload["assignedTo"] = {
+        id: driver.samsara_id,
+        type: "driver",
+      }
       payload["fields"][0]["textValue"]["value"] = "test"
       payload["fields"][1]["tableValue"]["rows"][0]["cells"][0]["textValue"]["value"] = order.id.to_s
       payload["title"] = template.title
